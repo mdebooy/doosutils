@@ -1,0 +1,8 @@
+<FindBugsFilter>
+  <Match>
+    <Class name="~eu\.debooy\.doosutils\.model\.base\.Base.*" />
+  </Match>
+  <Match>
+    <Class name="~eu\.debooy\.doosutils\.model\.base\._Base.*" />
+  </Match>
+</FindBugsFilter> 
