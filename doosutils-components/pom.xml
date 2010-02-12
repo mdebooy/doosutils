@@ -1,17 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>doosutils</artifactId>
     <groupId>eu.debooy.doosutils</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils-components</artifactId>
   <name>Utility classes voor DOOS Applicaties (components)</name>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <description>Utility classes voor DOOS Web Applicaties (components).</description>
   <packaging>jar</packaging>
 
@@ -49,7 +46,7 @@
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-core</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
     </dependency>
 	<dependency>
       <groupId>javax.faces</groupId>
