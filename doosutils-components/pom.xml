@@ -16,78 +16,26 @@
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <displayName>${pom.name}</displayName>
-          <description>${pom.description}</description>
-          <archive>
-            <manifestEntries>
-              <Specification-Title>${pom.name}</Specification-Title>
-              <Specification-Version>${pom.version}</Specification-Version>
-              <Specification-Vendor>${pom.organization.name}</Specification-Vendor>
-              <Implementation-Title>${pom.name}</Implementation-Title>
-              <Implementation-Version>${pom.version}</Implementation-Version>
-              <Implementation-Vendor-Id>${pom.groupId}</Implementation-Vendor-Id>
-              <Implementation-Vendor>${pom.organization.name}</Implementation-Vendor>
-              <Build-Time>${buildNumber}</Build-Time>
-            </manifestEntries>
-          </archive>
-        </configuration>
       </plugin>
     </plugins>
   </build>
 
   <dependencies>
-	<dependency>
+    <dependency>
       <groupId>com.sun.facelets</groupId>
       <artifactId>jsf-facelets</artifactId>
       <version>1.1.14</version>
       <optional>true</optional>
-	</dependency>
+    </dependency>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-core</artifactId>
       <version>1.0.1-SNAPSHOT</version>
     </dependency>
-	<dependency>
-      <groupId>javax.faces</groupId>
-      <artifactId>jsf-api</artifactId>
-      <version>1.2_12</version>
-      <optional>true</optional>
-	</dependency>
-	<dependency>
-      <groupId>javax.faces</groupId>
-      <artifactId>jsf-impl</artifactId>
-      <version>1.2_12</version>
-      <optional>true</optional>
-	</dependency>
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.4</version>
-      <optional>true</optional>
+      <groupId>eu.debooy.doosutils</groupId>
+      <artifactId>doosutils-web</artifactId>
+      <version>1.0.1-SNAPSHOT</version>
     </dependency>
-	<dependency>
-      <groupId>javax.security</groupId>
-      <artifactId>jaas</artifactId>
-      <version>1.0.01</version>
-      <optional>true</optional>
-    </dependency>
-	<dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.2</version>
-      <optional>true</optional>
-	</dependency>
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.15</version>
-    </dependency>
-	<dependency>
-      <groupId>org.richfaces.ui</groupId>
-      <artifactId>richfaces-ui</artifactId>
-      <version>3.3.2.CR1</version>
-      <optional>true</optional>
-	</dependency>
   </dependencies>
 </project>

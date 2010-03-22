@@ -6,7 +6,7 @@
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
  *
- * http://ec.europa.eu/idabc/eupl
+ * http://ec.europa.eu/idabc/7330l5
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
@@ -14,18 +14,25 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.doosutils;
+package eu.debooy.doosutils.errorhandling.exception;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import eu.debooy.doosutils.exception.LoggableException;
+
+import javax.ejb.ApplicationException;
 
 
 /**
  * @author Marco de Booij
  */
-@RunWith(Suite.class)
-@SuiteClasses({ArgumentsTest.class,
-               DatumTest.class})
-public class CoreTests {
+@ApplicationException
+public class ObjectNotFoundException extends LoggableException {
+  private static final long serialVersionUID = 1L;
+
+  public ObjectNotFoundException(Exception e, String application) {
+    super(e, application);
+  }
+
+  public ObjectNotFoundException(String message, String application) {
+    super(message, application);
+  }
 }
