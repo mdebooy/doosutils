@@ -21,7 +21,9 @@ package eu.debooy.doosutils.html;
  * @author Marco de Booy
  * @version $Revision$
  */
-public class Utilities {
+public final class Utilities {
+  private Utilities() {}
+
   public static String kwart(Double value) {
     String[]  displayString = {"", "&frac14;", "&frac12;", "&frac34;"};
 

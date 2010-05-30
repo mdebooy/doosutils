@@ -24,8 +24,10 @@ import java.rmi.RemoteException;
 /**
  * @author Marco de Booij
  */
-public class ExceptionLogUtil {
+public final class ExceptionLogUtil {
   private static final int _MAX_DEPTH = 5;
+
+  private ExceptionLogUtil() {}
 
   public static Throwable getRootCause(Throwable cause) {
     if (cause != null) {

@@ -30,8 +30,10 @@ import javax.faces.context.FacesContext;
 /**
  * @author Marco de Booij
  */
-public class Messages {
+public final class Messages {
   public static final String DEFAULT_BUNDLE = "eu.debooy.jsf.messages";
+
+  private Messages() {}
 
   public static ClassLoader getClassLoader() {
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -63,10 +65,10 @@ public class Messages {
                                       resourceId + "_detail", locale, loader,
                                       params);
     FacesMessage  msg     = new FacesMessage(severity, summary, detail);
-    if (component != null)
+    if (component != null) {
       FacesContext.getCurrentInstance().addMessage(
           component.getClientId(FacesContext.getCurrentInstance()), msg);
-    else {
+    } else {
       FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -112,13 +114,14 @@ public class Messages {
           resource  = bundle.getString(resourceId);
       } catch (Exception exc) {
       }
-      if (resource == null)
+      if (resource == null) {
         try {
           bundle = ResourceBundle.getBundle(bundle2, locale, loader);
           if (bundle != null)
             resource = bundle.getString(resourceId);
         } catch (Exception exc) {
         }
+      }
     }
     if (resource == null) {
       return null;

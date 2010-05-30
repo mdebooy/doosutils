@@ -46,7 +46,7 @@ public class JsfBean implements Serializable {
 
   private final transient Logger logger                =
     Logger.getLogger(JsfBean.class.getName());
-  public static final String     BEAN_NAME             = "jsf";
+  public  static final String    BEAN_NAME             = "jsf";
   private static final String    SESSION_DIRTYPAGE_KEY = "page.dirty";
   private static final String    VERSION_UNSTABLE      = "UNSTABLE";
   private static final String    DATE_UNKNOWN          = "UNKNOWN";
@@ -61,82 +61,89 @@ public class JsfBean implements Serializable {
   }
 
   public JsfBean() {
-    if (logger.isTraceEnabled())
+    if (logger.isTraceEnabled()) {
       logger.trace("JsfBean constructed.");
+    }
   }
 
-  public String getBuildVersion() {
+  public final String getBuildVersion() {
     return buildVersion;
   }
 
-  public String getBuildDate() {
+  public final String getBuildDate() {
     return buildDate;
   }
 
-  public String getUserId() {
+  public final String getUserId() {
     return userId;
   }
 
-  public String getUserName() {
+  public final String getUserName() {
     return userName;
   }
 
-  protected ExternalContext getExternalContext() {
-    FacesContext facesContext = FacesContext.getCurrentInstance();
+  protected final ExternalContext getExternalContext() {
+    FacesContext  facesContext  = FacesContext.getCurrentInstance();
+
     return facesContext.getExternalContext();
   }
 
-  protected UIViewRoot getViewRoot() {
+  protected final UIViewRoot getViewRoot() {
     return FacesContext.getCurrentInstance().getViewRoot();
   }
 
-  protected JsfBean getSessionBean(String name) {
+  protected final JsfBean getSessionBean(String name) {
     return (JsfBean) getExternalContext().getSessionMap().get(name);
   }
 
-  protected JsfBean getApplicationBean(String name) {
+  protected final JsfBean getApplicationBean(String name) {
     return (JsfBean) getExternalContext().getApplicationMap().get(name);
   }
 
-  protected JsfBean getRequestBean(String name) {
+  protected final JsfBean getRequestBean(String name) {
     return (JsfBean) getExternalContext().getRequestMap().get(name);
   }
 
-  protected JsfBean getBean(String name) {
-    JsfBean bean = getSessionBean(name);
-    if (bean != null)
+  protected final JsfBean getBean(String name) {
+    JsfBean bean  = getSessionBean(name);
+    if (bean != null) {
       return bean;
-    bean = getRequestBean(name);
-    if (bean != null)
+    }
+    bean  = getRequestBean(name);
+    if (bean != null) {
       return bean;
-    else
+    } else {
       return getApplicationBean(name);
+    }
   }
 
-  protected void destroyBean(String name) {
+  protected final void destroyBean(String name) {
     JsfBean bean  = getSessionBean(name);
-    if (bean != null)
+    if (bean != null) {
       getExternalContext().getSessionMap().remove(name);
-    else
+    } else {
       bean  = getRequestBean(name);
       while (bean != null) {
         getExternalContext().getRequestMap().remove(name);
         bean  = getRequestBean(name);
       }
-
+    }
   }
 
   @SuppressWarnings("unchecked")
   public static UIComponent findComponent(UIComponent baseComp, String id) {
-    if (baseComp.getId().endsWith(id))
+    if (baseComp.getId().endsWith(id)) {
       return baseComp;
-    if (baseComp.getChildCount() <= 0)
+    }
+    if (baseComp.getChildCount() <= 0) {
       return null;
+    }
     Iterator  iter  = baseComp.getChildren().iterator();
     UIComponent component;
     do {
-      if (!iter.hasNext())
+      if (!iter.hasNext()) {
         return null;
+      }
       UIComponent comp  = (UIComponent) iter.next();
       component = findComponent(comp, id);
     } while (component == null);
@@ -144,10 +151,11 @@ public class JsfBean implements Serializable {
     return component;
   }
 
-  protected void addMessage(UIComponent component,Severity severity,
+  protected final void addMessage(UIComponent component,Severity severity,
                             String summary, String detail) {
-    if (detail == null)
+    if (detail == null) {
       detail  = summary;
+    }
     FacesMessage msg = new FacesMessage(severity, summary, detail);
     FacesContext.getCurrentInstance()
                 .addMessage(
@@ -155,24 +163,25 @@ public class JsfBean implements Serializable {
                     msg);
   }
 
-  protected void setPageDirty(Boolean dirty) {
+  protected final void setPageDirty(Boolean dirty) {
     getExternalContext().getSessionMap().put(SESSION_DIRTYPAGE_KEY, dirty);
   }
 
-  public boolean isPageDirty() {
+  public final boolean isPageDirty() {
     Object  value = getExternalContext().getSessionMap()
                                         .get(SESSION_DIRTYPAGE_KEY);
-    if (value != null)
-      return ((Boolean) value).booleanValue();
-    else
+    if (null == value) {
       return false;
+    }
+
+    return ((Boolean) value).booleanValue();
   }
 
-  public TimeZone getTimeZone() {
+  public final TimeZone getTimeZone() {
     return TimeZone.getDefault();
   }
 
-  protected void processActionWithCaution(String proceedAction) {
+  protected final void processActionWithCaution(String proceedAction) {
     if (isPageDirty()) {
       ConfirmationBean  confirm =
         (ConfirmationBean) getSessionBean("confirmation");
@@ -188,13 +197,13 @@ public class JsfBean implements Serializable {
     }
   }
 
-  protected void generateExceptionMessage(Exception exception) {
+  protected final void generateExceptionMessage(Exception exception) {
     Messages.getMessage(null, FacesMessage.SEVERITY_ERROR,
         "eu.europa.ec.infso.jsf.messages", "generic.Exception", new Object[] {
             exception.getMessage(), exception });
   }
 
-  public void invokeAction(String action) {
+  public final void invokeAction(String action) {
     if (action != null) {
       StringTokenizer tk          = new StringTokenizer(action, ".", false);
       String          beanName    = tk.nextToken();

@@ -21,7 +21,9 @@ package eu.debooy.doosutils.latex;
  * @author Marco de Booy
  * @version $Revision$
  */
-public class Utilities {
+public final class Utilities {
+  private Utilities() {}
+
   public static String kwart(Double value) {
     String[]  displayString = {"",
                                "\\textonequarter",

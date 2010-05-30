@@ -38,8 +38,8 @@ import org.apache.log4j.Logger;
 /**
  * @author Marco de Booij
  */
-public class ServiceLocator {
-  static Logger
+public final class ServiceLocator {
+  private static Logger
     logger    = Logger.getLogger(ServiceLocator.class);
 
   private static List<Context>
@@ -62,16 +62,18 @@ public class ServiceLocator {
 
   public static ServiceLocator forceInstance(Properties env) {
     logger.warn("Default InitialContext wordt overschreven.");
-    if ((env == null) || (!(env.containsKey("java.naming.provider.url"))))
+    if ((env == null) || (!(env.containsKey("java.naming.provider.url")))) {
       throw new IllegalArgumentException(
           "forceInstance: Context environment mag niet null zijn en moet "
           + "minstens 1 'provider url' hebben.");
+    }
     try {
       Context initialContext = new InitialContext(env);
-      if (contexts.size() > 0)
+      if (contexts.size() > 0) {
         contexts.set(0, initialContext);
-      else
+      } else {
         contexts.add(initialContext);
+      }
     } catch (NamingException ne) {
       logger.error("Error in CTX lookup", ne);
     }

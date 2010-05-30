@@ -24,8 +24,8 @@ package eu.debooy.doosutils.exception;
 public class LoggableException extends Exception {
   private static final  long  serialVersionUID  = 1L;
 
-  protected String  application;
-  protected String  errorMessage;
+  private String  application;
+  private String  errorMessage;
 
   public LoggableException(LoggableException le) {
     super(le);

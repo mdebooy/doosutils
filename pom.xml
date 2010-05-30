@@ -57,6 +57,11 @@
       <name>DOOS snapshots</name>
       <url>http://intra.debooy.eu/nexus/content/repositories/doos-snapshots</url>
     </snapshotRepository>
+    <site>
+      <id>Documentatie</id>
+      <name>DOOS Documentatie</name>
+      <url>scp://intra.debooy.eu/var/www/site/doosutils</url>
+    </site>
   </distributionManagement>
 
   <build>
