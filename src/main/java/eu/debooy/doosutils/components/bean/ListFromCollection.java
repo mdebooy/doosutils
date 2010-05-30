@@ -72,10 +72,10 @@ public class ListFromCollection implements Serializable {
       if (size == 0)
         bufferSize =  cSize;
       else {
-        bufferSize = Math.min(size,   cSize);
+        bufferSize = Math.min(size, cSize);
       }
 
-      buffer = new ArrayList( bufferSize);
+      buffer = new ArrayList(bufferSize);
       offset = -1;
     }
 
@@ -87,17 +87,17 @@ public class ListFromCollection implements Serializable {
       if ((index < 0) || (index >= cSize)) {
         throw new IndexOutOfBoundsException();
       }
-      int offset = index / bufferSize * bufferSize;
-      if (offset != this.offset) {
-        _loadBuffer(offset);
-        this.offset = offset;
+      int gOffset = index / bufferSize * bufferSize;
+      if (gOffset != this.offset) {
+        loadBuffer(gOffset);
+        offset = gOffset;
       }
 
       return buffer.get(index - offset);
     }
 
     @SuppressWarnings("unchecked")
-    private void _loadBuffer(int offset) {
+    private void loadBuffer(int offset) {
       Iterator iter = collection.iterator();
       int i = 0;
 
