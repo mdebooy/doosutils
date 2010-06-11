@@ -2,13 +2,13 @@
   <parent>
     <artifactId>doosutils</artifactId>
     <groupId>eu.debooy.doosutils</groupId>
-    <version>1.0.2</version>
+    <version>1.0.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils-hibernate</artifactId>
   <name>Utility classes voor DOOS Applicaties (Hibernate)</name>
-  <version>1.0.2</version>
+  <version>1.0.3-SNAPSHOT</version>
   <description>Utility classes voor Hibernate.</description>
   <packaging>jar</packaging>
 
@@ -24,12 +24,12 @@
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-core</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-util</artifactId>
-      <version>1.0.2</version>
+      <version>1.0.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>net.sf.ehcache</groupId>
