@@ -2,13 +2,13 @@
   <parent>
     <artifactId>doosutils</artifactId>
     <groupId>eu.debooy.doosutils</groupId>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils-latex</artifactId>
   <name>Utility classes voor DOOS Applicaties (LaTeX)</name>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.3-SNAPSHOT</version>
   <description>Utility classes voor LaTeX.</description>
   <packaging>jar</packaging>
 </project>
