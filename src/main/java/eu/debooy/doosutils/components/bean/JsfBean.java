@@ -1,7 +1,7 @@
 /**
  * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -62,7 +62,7 @@ public class JsfBean implements Serializable {
 
   public JsfBean() {
     if (logger.isTraceEnabled()) {
-      logger.trace("JsfBean constructed.");
+      logger.trace("JsfBean gemaakt.");
     }
   }
 
@@ -130,7 +130,6 @@ public class JsfBean implements Serializable {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static UIComponent findComponent(UIComponent baseComp, String id) {
     if (baseComp.getId().endsWith(id)) {
       return baseComp;
@@ -138,7 +137,7 @@ public class JsfBean implements Serializable {
     if (baseComp.getChildCount() <= 0) {
       return null;
     }
-    Iterator  iter  = baseComp.getChildren().iterator();
+    Iterator<?> iter  = baseComp.getChildren().iterator();
     UIComponent component;
     do {
       if (!iter.hasNext()) {
@@ -187,9 +186,9 @@ public class JsfBean implements Serializable {
         (ConfirmationBean) getSessionBean("confirmation");
       confirm.setConfirmReturnAction(proceedAction);
       confirm.setHeader("Warning");
-      confirm.setBody("There are unsaved changes...<br/>Continuing will "
-                      + "discard these changes, are you sure you want to do "
-                      + "this?");
+      confirm.setBody("Er zijn niet opgeslagen veranderingen...<br/>Doorgaan "
+                      + "betekent dat je de wijzigingen zal verliezen. "
+                      + "Weet je zeker dat je dit wilt?");
 
       confirm.showPopup();
     } else {

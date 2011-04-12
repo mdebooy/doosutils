@@ -12,14 +12,6 @@
   <description>Utility classes voor DOOS Web Applicaties (components).</description>
   <packaging>jar</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>com.sun.facelets</groupId>

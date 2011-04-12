@@ -1,7 +1,7 @@
 /**
  * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -62,11 +62,11 @@ public class ListFromCollection implements Serializable {
     private final int           bufferSize;
     private final int           cSize;
     private int                 offset;
-    @SuppressWarnings("unchecked")
-    private ArrayList           buffer;
+    @SuppressWarnings("rawtypes")
+	private ArrayList           buffer;
 
-    @SuppressWarnings("unchecked")
-    public ListImpl(Collection<?> collection, int size) {
+    @SuppressWarnings("rawtypes")
+	public ListImpl(Collection<?> collection, int size) {
       this.collection = collection;
       cSize           = collection.size();
       if (size == 0)
@@ -98,7 +98,7 @@ public class ListFromCollection implements Serializable {
 
     @SuppressWarnings("unchecked")
     private void loadBuffer(int offset) {
-      Iterator iter = collection.iterator();
+      Iterator<?> iter = collection.iterator();
       int i = 0;
 
       while (i < offset) {
@@ -120,17 +120,16 @@ public class ListFromCollection implements Serializable {
   }
 
   private class MakeList extends AbstractMap<Collection<?>, List<?>> {
-    @SuppressWarnings("unchecked")
     public List<?> get(Object obj) {
       if (!(obj instanceof Collection)) {
         return null;
       }
 
       if ((obj instanceof List) && (obj instanceof RandomAccess)) {
-        return ((List) obj);
+        return ((List<?>) obj);
       }
 
-      Collection collection = (Collection) obj;
+      Collection<?> collection = (Collection<?>) obj;
 
       if (collection.isEmpty()) {
         return Collections.EMPTY_LIST;
