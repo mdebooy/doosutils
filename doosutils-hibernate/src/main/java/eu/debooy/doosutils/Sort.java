@@ -1,8 +1,7 @@
-package eu.debooy.doosutils;
 /**
- * Copyright 2009 Marco de Booy
+ * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -15,13 +14,13 @@ package eu.debooy.doosutils;
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-
+package eu.debooy.doosutils;
 
 import java.io.Serializable;
 
 
 /**
- * @author Marco de Booy
+ * @author Marco de Booij
  */
 public class Sort implements Serializable, Comparable<Sort> {
   private static final  long serialVersionUID = 1L;
@@ -37,15 +36,15 @@ public class Sort implements Serializable, Comparable<Sort> {
     this.order    = order;
   }
 
-  public String getProperty() {
+  public final String getProperty() {
     return property;
   }
 
-  public String getOrder() {
+  public final String getOrder() {
     return order;
   }
 
-  public int compareTo(Sort obj) {
+  public final int compareTo(Sort obj) {
     return (property+"|"+order).compareTo(obj.property+"|"+obj.order);
   }
 
@@ -53,19 +52,24 @@ public class Sort implements Serializable, Comparable<Sort> {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public final boolean equals(Object obj) {
+    if (this == obj) {
       return true;
-    if (!super.equals(obj))
+    }
+    if (!super.equals(obj)) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
 
     final Sort  other = (Sort) obj;
-    if (order != other.order)
+    if (order != other.order) {
       return false;
-    if (property != other.property)
+    }
+    if (property != other.property) {
       return false;
+    }
 
     return true;
   }
@@ -74,16 +78,12 @@ public class Sort implements Serializable, Comparable<Sort> {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     final int PRIME     = 31;
     int       result    = super.hashCode();
 
-    int       order     =
-      null == this.getOrder() ? 0 : this.getOrder().hashCode();
-    int       property  =
-      null == this.getProperty() ? 0 : this.getProperty().hashCode();
-    result  = PRIME * result + order;
-    result  = PRIME * result + property;
+    result  = PRIME * result + (null == order ? 0 : order.hashCode());
+    result  = PRIME * result + (null == property ? 0 : property.hashCode());
 
     return result;
   }
@@ -92,7 +92,7 @@ public class Sort implements Serializable, Comparable<Sort> {
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
+  public final String toString() {
     StringBuffer  result  = new StringBuffer();
 
     result.append("property: " + property);

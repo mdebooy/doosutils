@@ -1,7 +1,7 @@
 /**
  * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.0 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.0 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -20,13 +20,14 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 
-import javax.ejb.ApplicationException;
+//import javax.ejb.ApplicationException;
 
 
 /**
  * @author Marco de Booij
+ * @TODO EJB of niet
  */
-@ApplicationException
+//@ApplicationException
 public class MultipleObjectFoundException extends DoosRuntimeException {
   private static final long serialVersionUID = 1L;
 

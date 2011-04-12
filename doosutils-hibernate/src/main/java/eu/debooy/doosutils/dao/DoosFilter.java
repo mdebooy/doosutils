@@ -1,7 +1,7 @@
 /**
- * Copyright 2009 Marco de Booy
+ * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -27,10 +27,10 @@ import org.hibernate.criterion.Restrictions;
 
 
 /**
- * @author Marco de Booy
+ * @author Marco de Booij
  */
 public class DoosFilter implements CriteriaCommand {
-  List<Filter>  filters = new ArrayList<Filter>();
+  private List<Filter>  filters = new ArrayList<Filter>();
 
   public void addFilter(String property, Object value) {
     filters.add(new Filter(property, (String) value));

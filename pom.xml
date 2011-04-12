@@ -1,5 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>eu.debooy.maven</groupId>
+    <artifactId>pom</artifactId>
+    <version>1.0.1</version>
+  </parent>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils</artifactId>
   <packaging>pom</packaging>
@@ -7,17 +13,6 @@
   <name>Utility classes voor DOOS Applicaties</name>
   <description>Utility classes voor DOOS Applicaties.</description>
   <inceptionYear>2009</inceptionYear>
-  <organization>
-    <name>Marco de Booij</name>
-    <url>http://www.debooy.eu</url>
-  </organization>
-  <licenses>
-    <license>
-      <name>European Union Public Licence (EUPL v.1.1)</name>
-      <url>http://ec.europa.eu/idabc/eupl</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
   <scm>
     <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk</developerConnection>
     <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk</connection>
@@ -29,6 +24,7 @@
     <module>doosutils-hibernate</module>
     <module>doosutils-html</module>
     <module>doosutils-latex</module>
+    <module>doosutils-test</module>
     <module>doosutils-util</module>
     <module>doosutils-web</module>
   </modules>
@@ -47,134 +43,21 @@
   </developers>
 
   <distributionManagement>
-    <repository>
-      <id>DOOS</id>
-      <name>DOOS releases</name>
-      <url>http://intra.debooy.eu/nexus/content/repositories/doos-releases</url>
-    </repository>
-    <snapshotRepository>
-      <id>DOOS</id>
-      <name>DOOS snapshots</name>
-      <url>http://intra.debooy.eu/nexus/content/repositories/doos-snapshots</url>
-    </snapshotRepository>
     <site>
       <id>Documentatie</id>
       <name>DOOS Documentatie</name>
-      <url>scp://intra.debooy.eu/var/www/site/doosutils</url>
+      <url>scp://intra.debooy.eu/var/www/site/DOOS-Utils</url>
     </site>
   </distributionManagement>
 
   <build>
-    <pluginManagement>
-      <plugins>
-	      <plugin>
-	        <artifactId>maven-jar-plugin</artifactId>
-	        <configuration>
-	          <displayName>${pom.name}</displayName>
-	          <description>${pom.description}</description>
-	          <archive>
-	            <manifestEntries>
-	              <Specification-Title>${pom.name}</Specification-Title>
-	              <Specification-Version>${pom.version}</Specification-Version>
-	              <Specification-Vendor>${pom.organization.name}</Specification-Vendor>
-	              <Implementation-Title>${pom.name}</Implementation-Title>
-	              <Implementation-Version>${pom.version}</Implementation-Version>
-	              <Implementation-Vendor-Id>${pom.groupId}</Implementation-Vendor-Id>
-	              <Implementation-Vendor>${pom.organization.name}</Implementation-Vendor>
-	              <Build-Time>${buildNumber}</Build-Time>
-	            </manifestEntries>
-	          </archive>
-	        </configuration>
-	      </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-3</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
-          <items>
-            <item>timestamp</item>
-          </items>
-        </configuration>
-      </plugin>
-      <plugin>     
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.0-beta-9</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>2.1.1</version>
+        <artifactId>maven-shade-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>findbugs-maven-plugin</artifactId>
-        <configuration>
-          <threshold>Normal</threshold>
-          <effort>Default</effort>
-          <excludeFilterFile>findbugs-exclude.xml</excludeFilterFile>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>taglist-maven-plugin</artifactId>
-        <configuration>
-          <tags>
-            <tag>TODO</tag>
-          </tags>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <configuration>
-          <linkXref>false</linkXref>
-          <sourceEncoding>UTF-8</sourceEncoding>
-          <minimumTokens>100</minimumTokens>
-          <targetJdk>1.5</targetJdk>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 
   <dependencies>
     <dependency>
@@ -184,15 +67,9 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.6</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>1.2.15</version>
+      <version>1.2.16</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

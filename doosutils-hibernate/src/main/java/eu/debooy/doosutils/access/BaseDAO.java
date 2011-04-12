@@ -1,7 +1,7 @@
 /**
  * Copyright 2010 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -22,24 +22,24 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 
 import javax.persistence.EntityManager;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
 import org.hibernate.Session;
 import org.hibernate.ejb.EntityManagerImpl;
+import org.hibernate.ejb.HibernateEntityManager;
 
 
 /**
  * @author Marco de Booij
  */
 public class BaseDAO implements IProfiler {
-
   @Override
   public String getApplicationName() {
     throw new IllegalArgumentException(DoosLayer.PERSISTENCE,
-          "Application naam moet gezet worden in de implementerende DAO bean.");
+          "ApplicationName moet gezet worden in de implementerende DAO bean.");
   }
 
   @Override
-  public Logger getLogger() {
+  public Log getLog() {
     throw new IllegalArgumentException(DoosLayer.PERSISTENCE,
           "Een logger moet gezet worden in de implementerende DAO bean.");
   }
@@ -64,9 +64,12 @@ public class BaseDAO implements IProfiler {
     em.flush();
   }
 
-  public Session getHibernateSession(EntityManager em) {
+  public Session getSession(EntityManager em) {
+    if (em.getDelegate() instanceof HibernateEntityManager) {
+      return ((HibernateEntityManager) em.getDelegate()).getSession();
+    }
     if (em.getDelegate() instanceof EntityManagerImpl) {
-      return ((EntityManagerImpl)em.getDelegate()).getSession();
+      return ((EntityManagerImpl) em.getDelegate()).getSession();
     }
     return ((Session)em.getDelegate());
   }

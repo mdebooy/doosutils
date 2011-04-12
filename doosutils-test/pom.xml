@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>doosutils</artifactId>
+    <groupId>eu.debooy.doosutils</groupId>
+    <version>1.0.3-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>eu.debooy.doosutils</groupId>
+  <artifactId>doosutils-test</artifactId>
+  <name>Utility classes voor DOOS Applicaties (Test)</name>
+  <version>1.0.3-SNAPSHOT</version>
+  <description>Utility classes voor het testen van DOOS Applicaties.</description>
+  <packaging>jar</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+</project>

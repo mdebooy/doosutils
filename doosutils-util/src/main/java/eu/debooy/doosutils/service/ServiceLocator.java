@@ -1,7 +1,7 @@
 /**
  * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -31,37 +31,40 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
  * @author Marco de Booij
  */
 public final class ServiceLocator {
-  private static Logger
-    logger    = Logger.getLogger(ServiceLocator.class);
+  private static Log            log       =
+    LogFactory.getLog(ServiceLocator.class);
 
-  private static List<Context>
-    contexts  = new ArrayList<Context>();
-  private static ServiceLocator
-    _instance = new ServiceLocator();
+  private static List<Context>  contexts  = new ArrayList<Context>();
+  private static ServiceLocator me        = new ServiceLocator();
 
   private ServiceLocator() {
     try {
+//      Properties  contextProperties = new Properties();
+//      contextProperties.put(Context.INITIAL_CONTEXT_FACTORY,
+//                            "org.apache.openejb.client.LocalInitialContextFactory");
+//      contextProperties.put(Context.PROVIDER_URL, "ejbd://localhost:4201");
+
       contexts.add(new InitialContext());
       loadBackupContexts();
     } catch (NamingException ne) {
-      logger.error("Error in CTX lookup", ne);
+      log.error("Error in CTX lookup", ne);
     }
   }
 
   public static ServiceLocator getInstance() {
-    return _instance;
+    return me;
   }
 
   public static ServiceLocator forceInstance(Properties env) {
-    logger.warn("Default InitialContext wordt overschreven.");
+    log.warn("Default InitialContext wordt overschreven.");
     if ((env == null) || (!(env.containsKey("java.naming.provider.url")))) {
       throw new IllegalArgumentException(
           "forceInstance: Context environment mag niet null zijn en moet "
@@ -75,9 +78,9 @@ public final class ServiceLocator {
         contexts.add(initialContext);
       }
     } catch (NamingException ne) {
-      logger.error("Error in CTX lookup", ne);
+      log.error("Error in CTX lookup", ne);
     }
-    return _instance;
+    return me;
   }
 
   public DataSource getDataSource(String jndiName)
@@ -88,8 +91,8 @@ public final class ServiceLocator {
     }
     DataSource datasource = (DataSource) lookup(jndiName);
     if (datasource == null) {
-      logger.error("getDataSource: Kan geen datasource vinden met jndiName="
-          + jndiName + " in geen enkele context.");
+      log.error("getDataSource: Kan geen datasource vinden met jndiName="
+                + jndiName + " in geen enkele context.");
       throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
                   DoosLayer.BUSINESS, "Kan geen datasource vinden met jndiName="
                   + jndiName + " in geen enkele context.");
@@ -117,14 +120,17 @@ public final class ServiceLocator {
           "getEJB: interfaceClassName mag niet null zijn.");
     }
 
-    String  jndi      = mappedName;
-    logger.debug("getEJB: trying OpenEJB jndi:" + jndi);
+    String  jndi  = mappedName;
+    log.debug("getEJB: trying Tomcat jndi:" + jndi);
     Object  ejbObject = lookup(jndi);
+    if (ejbObject == null) {
+      jndi      = mappedName;
+      log.debug("getEJB: trying OpenEJB jndi:" + jndi);
+      ejbObject = lookup(jndi);
+    }
     if (ejbObject != null) {
-      logger.debug("getEJB: ejb gevonden.");
-    } else {
-      logger.error("getEJB: Kan geen ejb vinden met mappedName=" + mappedName
-          + " in any of the provided contexts.");
+      log.error("getEJB: Kan geen ejb vinden met mappedName=" + mappedName
+                + " in any of the provided contexts.");
       throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
                   DoosLayer.BUSINESS, "Kan geen ejb vinden met  mappedName="
                   + mappedName + " in geen enkele context.");
@@ -140,8 +146,8 @@ public final class ServiceLocator {
     }
     Object ejbObject = lookup(jndiName);
     if (ejbObject == null) {
-      logger.error("getEJB: Kan geen ejb vinden met jndiName=" + jndiName
-                   + " in geen enkele context.");
+      log.error("getEJB: Kan geen ejb vinden met jndiName=" + jndiName
+                + " in geen enkele context.");
       throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
                   DoosLayer.BUSINESS, "Kan geen ejb vinden met jndiName="
                   + jndiName + " in geen enkele context.");
@@ -167,7 +173,7 @@ public final class ServiceLocator {
     InputStream xmlStream = super.getClass().getClassLoader()
                                  .getResourceAsStream("locator-properties.xml");
     if (xmlStream != null) {
-      logger.info("Toevoegennvan  backup context providers...");
+      log.info("Toevoegen van backup context providers...");
       Properties props = new Properties();
       try {
         props.loadFromXML(xmlStream);
@@ -192,17 +198,17 @@ public final class ServiceLocator {
             Context ctx = new InitialContext(env);
             contexts.add(ctx);
           } catch (NamingException e) {
-            logger.warn(
+            log.warn(
                 "loadBackupContexts: Kan geen context maken voor server " + i
-                    + ", server wordt genegeerd.", e);
+                 + ", server wordt genegeerd.", e);
           }
           ++i;
         }
       } catch (InvalidPropertiesFormatException e) {
-        logger.error("loadBackupContexts: Unable to parse to "
-                     + "locator-properties.xml.", e);
+        log.error("loadBackupContexts: Kan locator-properties.xml niet parsen.",
+                  e);
       } catch (IOException e) {
-        logger.error(
+        log.error(
             "loadBackupContexts: Kan locator-properties.xml niet lezen.", e);
       }
     }
@@ -217,8 +223,8 @@ public final class ServiceLocator {
       Context context = new InitialContext(env);
       contexts.add(context);
     } catch (NamingException ne) {
-      logger.error("Error in CTX lookup", ne);
+      log.error("Error in CTX lookup", ne);
     }
-    return _instance;
+    return me;
   }
 }

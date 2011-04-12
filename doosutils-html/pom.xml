@@ -11,12 +11,4 @@
   <version>1.0.3-SNAPSHOT</version>
   <description>Utility classes voor HTML.</description>
   <packaging>jar</packaging>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
 </project>

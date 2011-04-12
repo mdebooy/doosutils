@@ -12,14 +12,6 @@
   <description>Utility classes voor Hibernate.</description>
   <packaging>jar</packaging>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
@@ -28,8 +20,34 @@
     </dependency>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
+      <artifactId>doosutils-test</artifactId>
+      <version>1.0.3-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-util</artifactId>
       <version>1.0.3-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.8.0.10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.ejb</groupId>
+      <artifactId>ejb-api</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
     </dependency>
     <dependency>
       <groupId>net.sf.ehcache</groupId>
@@ -37,64 +55,45 @@
       <version>1.6.0</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>5.0-2</version>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-servlet_2.4_spec</artifactId>
+      <version>1.1.1</version>
       <scope>provided</scope>
+    </dependency>
+    <!-- dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>ejb3-persistence</artifactId>
+      <version>1.0.2.GA</version>
+    </dependency -->
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-c3p0</artifactId>
+      <version>3.3.2.GA</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>3.3.0.SP1</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>3.6.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>3.4.0.GA</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-      <version>3.4.0.GA</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>3.6.0.Final</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>3.1.0.GA</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-api</artifactId>
-        </exclusion>
-      </exclusions>
+      <version>4.0.2.GA</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.5.8</version>
+      <version>1.6.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.5.8</version>
+      <version>1.6.1</version>
     </dependency>
   </dependencies>
 </project>

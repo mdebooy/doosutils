@@ -1,8 +1,7 @@
-package eu.debooy.doosutils;
 /**
- * Copyright 2009 Marco de Booy
+ * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or – as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -15,13 +14,13 @@ package eu.debooy.doosutils;
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-
+package eu.debooy.doosutils;
 
 import java.io.Serializable;
 
 
 /**
- * @author Marco de Booy
+ * @author Marco de Booij
  */
 public class Filter implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -34,15 +33,15 @@ public class Filter implements Serializable {
     this.value    = value;
   }
 
-  public String getProperty() {
+  public final String getProperty() {
     return property;
   }
 
-  public Object getValue() {
+  public final Object getValue() {
     return value;
   }
 
-  public int compareTo(Filter obj) {
+  public final int compareTo(Filter obj) {
     return (property+"|"+value).compareTo(obj.property+"|"+obj.value);
   }
 
@@ -50,19 +49,24 @@ public class Filter implements Serializable {
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public final boolean equals(Object obj) {
+    if (this == obj) {
       return true;
-    if (!super.equals(obj))
+    }
+    if (!super.equals(obj)) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
 
     final Filter  other = (Filter) obj;
-    if (value != other.value)
+    if (value != other.value) {
       return false;
-    if (property != other.property)
+    }
+    if (property != other.property) {
       return false;
+    }
 
     return true;
   }
@@ -71,16 +75,12 @@ public class Filter implements Serializable {
    * @see java.lang.Object#hashCode()
    */
   @Override
-  public int hashCode() {
+  public final int hashCode() {
     final int PRIME     = 31;
     int       result    = super.hashCode();
 
-    int       property  =
-      null == this.getProperty() ? 0 : this.getProperty().hashCode();
-    int       value     =
-      null == this.getValue() ? 0 : this.getValue().hashCode();
-    result  = PRIME * result + property;
-    result  = PRIME * result + value;
+    result  = PRIME * result + (null == property ? 0 : property.hashCode());
+    result  = PRIME * result + (null == value ? 0 : value.hashCode());
 
     return result;
   }
@@ -89,7 +89,7 @@ public class Filter implements Serializable {
    * @see java.lang.Object#toString()
    */
   @Override
-  public String toString() {
+  public final String toString() {
     StringBuffer  result  = new StringBuffer();
 
     result.append("property: " + property);
@@ -98,4 +98,3 @@ public class Filter implements Serializable {
     return result.toString();
   }
 }
-
