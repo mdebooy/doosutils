@@ -5,10 +5,8 @@
     <version>1.0.4-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils-html</artifactId>
   <name>Utility classes voor DOOS Applicaties (HTML)</name>
-  <version>1.0.4-SNAPSHOT</version>
   <description>Utility classes voor HTML.</description>
   <packaging>jar</packaging>
 </project>
