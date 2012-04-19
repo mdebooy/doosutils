@@ -6,7 +6,7 @@
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
  *
- * http://ec.europa.eu/idabc/eupl
+ * http://www.osor.eu/eupl
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
@@ -20,10 +20,13 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosError;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 
+import javax.ejb.ApplicationException;
+
 
 /**
  * @author Marco de Booij
  */
+@ApplicationException
 public class IllegalArgumentException extends DoosRuntimeException {
   private static final  long  serialVersionUID  = 1L;
 

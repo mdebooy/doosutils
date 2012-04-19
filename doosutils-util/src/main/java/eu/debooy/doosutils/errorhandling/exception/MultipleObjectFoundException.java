@@ -1,12 +1,12 @@
 /**
- * Copyright 2010 Marco de Booij
+ * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
+ * Licensed under the EUPL, Version 1.0 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
  *
- * http://www.osor.eu/eupl
+ * http://ec.europa.eu/idabc/7330l5
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
@@ -27,15 +27,15 @@ import javax.ejb.ApplicationException;
  * @author Marco de Booij
  */
 @ApplicationException
-public class FileNotFoundException extends DoosRuntimeException {
-  private static final  long  serialVersionUID  = 1L;
+public class MultipleObjectFoundException extends DoosRuntimeException {
+  private static final long serialVersionUID = 1L;
 
-  public FileNotFoundException(DoosLayer layer, String message) {
-    super(DoosError.FILE_NOT_FOUND, layer, message);
+  public MultipleObjectFoundException(DoosLayer layer, String message) {
+    super(DoosError.MULTIPLE_OBJECT_FOUND, layer, message);
   }
 
-  public FileNotFoundException(DoosLayer layer, String message,
-                                  Throwable cause) {
-    super(DoosError.FILE_NOT_FOUND, layer, message, cause);
+  public MultipleObjectFoundException(DoosLayer layer, String message,
+                                      Throwable cause) {
+    super(DoosError.MULTIPLE_OBJECT_FOUND, layer, message, cause);
   }
 }

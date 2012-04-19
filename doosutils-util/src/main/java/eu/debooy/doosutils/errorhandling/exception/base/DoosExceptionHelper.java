@@ -35,7 +35,7 @@ public final class DoosExceptionHelper {
   }
 
   public static String convertParameter(Object object) {
-    if (object == null) {
+    if (null == object) {
       return "<NULL>";
     }
     if (object instanceof Long) {
@@ -48,6 +48,10 @@ public final class DoosExceptionHelper {
   }
 
   public static String convertParameters(Object[] objects) {
+    if (null == objects) {
+      return "<NULL>";
+    }
+
     StringBuffer  params  = new StringBuffer("");
     for (Object object : objects) {
       if (params.length() > 0) {

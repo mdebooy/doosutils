@@ -22,17 +22,10 @@ package eu.debooy.doosutils.errorhandling.exception.base;
  */
 public abstract interface IDoosException {
   public abstract DoosError getDoosError();
-
   public abstract DoosLayer getDoosLayer();
-
-  public abstract boolean isLogged();
-
-  public abstract void setLoggedTrue();
-
-  public abstract boolean isLoggable();
-
-  public abstract void setLoggable(boolean paramBoolean);
-
-  public abstract String getStackTraceAsString();
-
+  public abstract boolean   isLogged();
+  public abstract void      setLoggedTrue();
+  public abstract boolean   isLoggable();
+  public abstract void      setLoggable(boolean loggable);
+  public abstract String    getStackTraceAsString();
 }

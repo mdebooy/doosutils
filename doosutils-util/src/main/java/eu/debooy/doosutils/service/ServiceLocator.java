@@ -6,7 +6,7 @@
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
  *
- * http://ec.europa.eu/idabc/eupl
+ * http://www.osor.eu/eupl
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
@@ -28,6 +28,8 @@ import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NameClassPair;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -43,15 +45,10 @@ public final class ServiceLocator {
     LogFactory.getLog(ServiceLocator.class);
 
   private static List<Context>  contexts  = new ArrayList<Context>();
-  private static ServiceLocator me        = new ServiceLocator();
+  private static ServiceLocator locator   = new ServiceLocator();
 
   private ServiceLocator() {
     try {
-//      Properties  contextProperties = new Properties();
-//      contextProperties.put(Context.INITIAL_CONTEXT_FACTORY,
-//                            "org.apache.openejb.client.LocalInitialContextFactory");
-//      contextProperties.put(Context.PROVIDER_URL, "ejbd://localhost:4201");
-
       contexts.add(new InitialContext());
       loadBackupContexts();
     } catch (NamingException ne) {
@@ -60,7 +57,7 @@ public final class ServiceLocator {
   }
 
   public static ServiceLocator getInstance() {
-    return me;
+    return locator;
   }
 
   public static ServiceLocator forceInstance(Properties env) {
@@ -68,7 +65,7 @@ public final class ServiceLocator {
     if ((env == null) || (!(env.containsKey("java.naming.provider.url")))) {
       throw new IllegalArgumentException(
           "forceInstance: Context environment mag niet null zijn en moet "
-          + "minstens 1 'provider url' hebben.");
+          + "minstens 1 'provider URL' hebben.");
     }
     try {
       Context initialContext = new InitialContext(env);
@@ -80,90 +77,153 @@ public final class ServiceLocator {
     } catch (NamingException ne) {
       log.error("Error in CTX lookup", ne);
     }
-    return me;
+    return locator;
   }
 
-  public DataSource getDataSource(String jndiName)
+  /**
+   * Get de DataSource
+   * 
+   * @param jndi
+   * @return
+   * @throws ServiceLocatorException
+   */
+  public DataSource getDataSource(String jndi)
       throws ServiceLocatorException {
-    if (jndiName == null) {
+    if (jndi == null) {
       throw new IllegalArgumentException(
-          "getDataSource: jndiName mag niet null zijn.");
+          "getDataSource: JNDI mag niet null zijn.");
     }
-    DataSource datasource = (DataSource) lookup(jndiName);
+    log.debug("getDataSource: Zoek JNDI " + jndi);
+    DataSource datasource = (DataSource) lookup(jndi);
     if (datasource == null) {
-      log.error("getDataSource: Kan geen datasource vinden met jndiName="
-                + jndiName + " in geen enkele context.");
+      log.error("getDataSource: Kan geen datasource vinden met JNDI="
+                + jndi + " in geen enkele context.");
       throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
-                  DoosLayer.BUSINESS, "Kan geen datasource vinden met jndiName="
-                  + jndiName + " in geen enkele context.");
+                  DoosLayer.BUSINESS, "Kan geen datasource vinden met JNDI="
+                  + jndi + " in geen enkele context.");
     }
+    log.debug("getDataSource: Gevonden.");
 
     return datasource;
   }
 
+  /**
+   * Get de EJB
+   * 
+   * @param jndi
+   * @return
+   * @throws ServiceLocatorException
+   */
+  public Object getEJB(String resource) throws ServiceLocatorException {
+    if (null == resource) {
+      throw new IllegalArgumentException("getEJB: JNDI mag niet null zijn.");
+    }
+    String  appName = (String) lookup("java:app/AppName");
+    String  jndi    = "java:global/" + appName + "/" + resource;
+    log.debug("getEJB: Zoek JNDI " + jndi);
+    Object ejbObject = lookup(jndi);
+    if (null == ejbObject) {
+      jndi      = resource;
+      ejbObject = lookup(jndi);
+      if (null == ejbObject) {
+        log.error("getEJB: Kan geen EJB vinden met JNDI=" + jndi
+                  + " in geen enkele context.");
+        throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
+                    DoosLayer.BUSINESS, "Kan geen EJB vinden met JNDI="
+                    + jndi + " in geen enkele context.");
+      }
+    }
+    log.debug("getEJB: Gevonden.");
+
+    return ejbObject;
+  }
+
+  /**
+   * Get de EJB
+   * 
+   * @param mappedName
+   * @param interfaceClassName
+   * @param params
+   * @return
+   * @throws ServiceLocatorException
+   */
   public Object getEJB(String mappedName, Class<?> interfaceClassName,
-                       String[] params) throws ServiceLocatorException {
+                       String... params) throws ServiceLocatorException {
     String canonicalName = interfaceClassName.getCanonicalName();
 
     return getEJB(mappedName, canonicalName, params);
   }
 
-  public Object getEJB(String mappedName, String interfaceClassName,
-                       String[] params) throws ServiceLocatorException {
+  /**
+   * Get de EJB
+   * 
+   * @param mappedName
+   * @param interfaceClassName
+   * @param params
+   * @return
+   * @throws ServiceLocatorException
+   */
+  public Object getEJB(String mappedName, String className,
+                       String... params) throws ServiceLocatorException {
     if (mappedName == null) {
       throw
         new IllegalArgumentException("getEJB: mappedName mag niet null zijn.");
     }
 
-    if (interfaceClassName == null) {
+    if (className == null) {
       throw new IllegalArgumentException(
-          "getEJB: interfaceClassName mag niet null zijn.");
+          "getEJB: ClassName mag niet null zijn.");
     }
 
-    String  jndi  = mappedName;
-    log.debug("getEJB: trying Tomcat jndi:" + jndi);
+    // Glassfish local
+    String  appName   = (String) lookup("java:app/AppName");
+    String  jndi      = "java:global/" + appName + "/" + mappedName + "!"
+                        + className;
     Object  ejbObject = lookup(jndi);
-    if (ejbObject == null) {
-      jndi      = mappedName;
-      log.debug("getEJB: trying OpenEJB jndi:" + jndi);
+    if (null == ejbObject) {
+      // Glassfish remote
+      jndi      = mappedName + "!" + className;
       ejbObject = lookup(jndi);
+      if (null == ejbObject) {
+        log.error("getEJB: Kan geen EJB vinden met JNDI=" + jndi
+                  + " in geen enkele context.");
+        throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
+                    DoosLayer.BUSINESS, "Kan geen EJB vinden met JNDI="
+                    + jndi + " in geen enkele context.");
+      }
     }
-    if (ejbObject != null) {
-      log.error("getEJB: Kan geen ejb vinden met mappedName=" + mappedName
-                + " in any of the provided contexts.");
-      throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
-                  DoosLayer.BUSINESS, "Kan geen ejb vinden met  mappedName="
-                  + mappedName + " in geen enkele context.");
-    }
+    log.debug("getEJB: Gevonden.");
 
     return ejbObject;
   }
 
-  public Object getEJB(String jndiName) throws ServiceLocatorException {
-    if (jndiName == null) {
-      throw new IllegalArgumentException("getEJB: jndiName mag niet null "
-                                         + "zijn.");
+  private void listContext(String s, Context context) throws NamingException {
+    NamingEnumeration<NameClassPair>  pairs = context.list("");
+    for (; pairs.hasMoreElements();) {
+      NameClassPair pair  = pairs.next();
+      log.debug(s + "/" + pair.getName() + " " + pair.getClassName());
+      Object obj  = context.lookup(pair.getName());
+      if (obj instanceof Context) {
+        Context child = (Context) obj;
+        listContext(s + "/" + pair.getName(), child);
+      }
     }
-    Object ejbObject = lookup(jndiName);
-    if (ejbObject == null) {
-      log.error("getEJB: Kan geen ejb vinden met jndiName=" + jndiName
-                + " in geen enkele context.");
-      throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
-                  DoosLayer.BUSINESS, "Kan geen ejb vinden met jndiName="
-                  + jndiName + " in geen enkele context.");
-    }
-
-    return ejbObject;
   }
 
-  private Object lookup(String jndiName) {
+  private Object lookup(String jndi) {
     Context context = null;
     for (int i = 0; i < contexts.size(); ++i) {
       context = (Context) contexts.get(i);
       try {
-        Object object = context.lookup(jndiName);
+        listContext("", context);
+      } catch (NamingException e) {
+        log.debug(e.getMessage());
+      }
+      try {
+        Object object = context.lookup(jndi);
         return object;
       } catch (NamingException e) {
+        log.debug("JNDI: " + jndi + " [" + e.getMessage() + "]");
       }
     }
     return null;
@@ -218,13 +278,13 @@ public final class ServiceLocator {
     if ((env == null) || (!(env.containsKey("java.naming.provider.url"))))
       throw new IllegalArgumentException(
           "addContext: Context environment mag niet null zijn en moet "
-          + "minstens 1 'provider url' hebben.");
+          + "minstens 1 'provider URL' hebben.");
     try {
       Context context = new InitialContext(env);
       contexts.add(context);
     } catch (NamingException ne) {
       log.error("Error in CTX lookup", ne);
     }
-    return me;
+    return locator;
   }
 }

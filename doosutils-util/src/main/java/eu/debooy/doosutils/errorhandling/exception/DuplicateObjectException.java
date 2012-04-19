@@ -1,12 +1,12 @@
 /**
- * Copyright 2010 Marco de Booij
+ * Copyright 2009 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
+ * Licensed under the EUPL, Version 1.0 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
  *
- * http://www.osor.eu/eupl
+ * http://ec.europa.eu/idabc/7330l5
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
@@ -25,17 +25,26 @@ import javax.ejb.ApplicationException;
 
 /**
  * @author Marco de Booij
- */
+ */ 
 @ApplicationException
-public class FileNotFoundException extends DoosRuntimeException {
-  private static final  long  serialVersionUID  = 1L;
+public class DuplicateObjectException extends DoosRuntimeException {
+  private static final long serialVersionUID = 1L;
 
-  public FileNotFoundException(DoosLayer layer, String message) {
-    super(DoosError.FILE_NOT_FOUND, layer, message);
+  private Object  failedObject;
+
+  public Object getFailedObject() {
+      return failedObject;
   }
 
-  public FileNotFoundException(DoosLayer layer, String message,
-                                  Throwable cause) {
-    super(DoosError.FILE_NOT_FOUND, layer, message, cause);
+  public DuplicateObjectException(DoosLayer doosLayer, Object failedObject,
+                                  String message) {
+    super(DoosError.DUPLICATE_OBJECT, doosLayer, message);
+    this.failedObject = failedObject;
+  }
+
+  public DuplicateObjectException(DoosLayer doosLayer, Object failedObject,
+                                  String message, Throwable cause) {
+    super(DoosError.DUPLICATE_OBJECT, doosLayer, message, cause);
+    this.failedObject = failedObject;
   }
 }

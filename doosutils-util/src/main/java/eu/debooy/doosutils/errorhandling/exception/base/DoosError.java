@@ -23,23 +23,28 @@ import java.io.Serializable;
  * @author Marco de Booij
  */
 public class DoosError implements Serializable {
-  private static final long serialVersionUID = 1L;
+  private static final  long    serialVersionUID      = 1L;
 
-  private final String code;
-  private final String description;
+  private final   String  code;
+  private final   String  description;
 
   public static final DoosError DUPLICATE_OBJECT      =
-    new DoosError("DUPLICATE_OBJECT");
+      new DoosError("DUPLICATE_OBJECT");
   public static final DoosError FILE_NOT_FOUND        =
-    new DoosError("FILE_NOT_FOUND");
+      new DoosError("FILE_NOT_FOUND");
   public static final DoosError ILLEGAL_ARGUMENT      =
-    new DoosError("ILLEGAL_ARGUMENT");
+      new DoosError("ILLEGAL_ARGUMENT");
   public static final DoosError MULTIPLE_OBJECT_FOUND =
-    new DoosError("MULTIPLE_OBJECT_FOUND");
+      new DoosError("MULTIPLE_OBJECT_FOUND");
   public static final DoosError OBJECT_NOT_FOUND      =
-    new DoosError("OBJECT_NOT_FOUND");
+      new DoosError("OBJECT_NOT_FOUND");
   public static final DoosError RUNTIME_EXCEPTION     =
-    new DoosError("RUNTIME_EXCEPTION");
+      new DoosError("RUNTIME_EXCEPTION");
+  public static final DoosError SERIALIZED_EXCEPTION  =
+      new DoosError("SERIALIZED_EXCEPTION");
+  public static final DoosError WRAPPED_EXCEPTION     =
+      new DoosError("WRAPPED_EXCEPTION");
+
 
   protected DoosError() {
     code        = "DEFAULT";
