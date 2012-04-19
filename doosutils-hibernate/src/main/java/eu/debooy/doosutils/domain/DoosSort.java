@@ -14,7 +14,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.doosutils.dao;
+package eu.debooy.doosutils.domain;
 
 import eu.debooy.doosutils.Sort;
 

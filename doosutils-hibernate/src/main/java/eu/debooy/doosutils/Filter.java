@@ -18,6 +18,10 @@ package eu.debooy.doosutils;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 
 /**
  * @author Marco de Booij
@@ -25,50 +29,41 @@ import java.io.Serializable;
 public class Filter implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private final String  property;
-  private final Object  value;
+  private final String  element;
+  private final Object  waarde;
 
-  public Filter(String property, Object value) {
-    this.property = property;
-    this.value    = value;
+  public Filter(String element, Object waarde) {
+    this.element  = element;
+    this.waarde   = waarde;
   }
 
-  public final String getProperty() {
-    return property;
+  public final String getElement() {
+    return element;
   }
 
-  public final Object getValue() {
-    return value;
+  public final Object getWaarde() {
+    return waarde;
   }
 
-  public final int compareTo(Filter obj) {
-    return (property+"|"+value).compareTo(obj.property+"|"+obj.value);
+  public final int compareTo(Filter filter) {
+    return new CompareToBuilder().append(element, filter.element)
+                                 .append(waarde, filter.waarde)
+                                 .toComparison();
   }
 
   /* (non-Javadoc)
    * @see java.lang.Object#equals(java.lang.Object)
    */
   @Override
-  public final boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!super.equals(obj)) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
+  public final boolean equals(Object object) {
+    if (!(object instanceof Filter)) {
       return false;
     }
 
-    final Filter  other = (Filter) obj;
-    if (value != other.value) {
-      return false;
-    }
-    if (property != other.property) {
-      return false;
-    }
+    Filter  filter  = (Filter) object;
+    return new EqualsBuilder().append(element, filter.element)
+                              .append(waarde, filter.waarde).isEquals();
 
-    return true;
   }
 
   /* (non-Javadoc)
@@ -76,13 +71,8 @@ public class Filter implements Serializable {
    */
   @Override
   public final int hashCode() {
-    final int PRIME     = 31;
-    int       result    = super.hashCode();
-
-    result  = PRIME * result + (null == property ? 0 : property.hashCode());
-    result  = PRIME * result + (null == value ? 0 : value.hashCode());
-
-    return result;
+    return new HashCodeBuilder().append(element).append(waarde)
+                                .toHashCode();
   }
 
   /* (non-Javadoc)
@@ -92,8 +82,8 @@ public class Filter implements Serializable {
   public final String toString() {
     StringBuffer  result  = new StringBuffer();
 
-    result.append("property: " + property);
-    result.append(" - value: " + value);
+    result.append("element: " + element);
+    result.append(" - waarde: " + waarde);
 
     return result.toString();
   }
