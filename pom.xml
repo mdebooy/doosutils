@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.debooy.maven</groupId>
     <artifactId>pom</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
   </parent>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils</artifactId>
@@ -21,6 +21,7 @@
   <modules>
     <module>doosutils-components</module>
     <module>doosutils-core</module>
+    <module>doosutils-file</module>
     <module>doosutils-hibernate</module>
     <module>doosutils-html</module>
     <module>doosutils-latex</module>
@@ -67,10 +68,20 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.16</version>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.8</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+        <version>2.4</version>
+      </dependency>
+   </dependencies>
+ </dependencyManagement>
 </project>
