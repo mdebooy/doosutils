@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
@@ -35,63 +36,139 @@ public final class Messages {
 
   private Messages() {}
 
+  /**
+   * Zoek een Component ook in geneste components.
+   * 
+   * @param component
+   * @param componentId
+   * @return
+   */
+  public static UIComponent findComponent(UIComponent component,
+                                          String componentId) {
+    if (component.getId().endsWith(componentId)) {
+      return component;
+    }
+    UIComponent gevondenComp;
+    for (UIComponent comp : component.getChildren()) {
+      gevondenComp  = findComponent(comp, componentId);
+      if (null != gevondenComp) {
+        return gevondenComp;
+      }
+    }
+
+    return null;
+  } 
+
+  /**
+   * @return
+   */
   public static ClassLoader getClassLoader() {
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
-    if (loader == null) {
+    if (null == loader) {
       loader = ClassLoader.getSystemClassLoader();
     }
 
     return loader;
   }
 
+  /**
+   * @param context
+   * @return
+   */
+  public static Locale getLocale(FacesContext context) {
+    Locale      locale    = null;
+    UIViewRoot  viewRoot  = context.getViewRoot();
+    if (viewRoot != null) {
+      locale  = viewRoot.getLocale();
+    }
+    if (locale == null) {
+      locale  = Locale.getDefault();
+    }
+
+    return locale;
+  }
+
+  public static void getMessage(UIComponent component, FacesMessage msg) {
+    FacesContext.getCurrentInstance()
+                .addMessage(
+                    component.getClientId(FacesContext.getCurrentInstance()),
+                    msg);
+  }
+
+  public static void getMessage(FacesMessage msg) {
+    FacesContext.getCurrentInstance().addMessage(null, msg);
+  }
+
+  /**
+   * @param component
+   * @param severity
+   * @param bundleName
+   * @param resourceId
+   * @param params
+   * @return
+   */
   public static FacesMessage getMessage(UIComponent component,
-                                        FacesMessage.Severity severity,
-                                        String bundleName, String resourceId,
-                                        Object[] params) {
+                                        Severity severity, String bundleName,
+                                        String resourceId, Object... params) {
     FacesContext  context   = FacesContext.getCurrentInstance();
     Application   app       = context.getApplication();
     String        appBundle = app.getMessageBundle();
     Locale        locale    = getLocale(context);
     ClassLoader   loader    = getClassLoader();
     String        summary   = "";
-    if (resourceId != null) {
+
+    if (null != resourceId) {
       summary = getString(appBundle, bundleName, resourceId, locale, loader,
-          params);
-      if (summary == null) {
+                          params);
+      if (null == summary) {
         summary = "???" + resourceId + "???";
       }
     }
+
     String        detail  = getString(appBundle, bundleName,
                                       resourceId + "_detail", locale, loader,
                                       params);
     FacesMessage  msg     = new FacesMessage(severity, summary, detail);
-    if (component != null) {
-      FacesContext.getCurrentInstance().addMessage(
-          component.getClientId(FacesContext.getCurrentInstance()), msg);
+    if (null != component) {
+      getMessage(component, msg);
     } else {
-      FacesContext.getCurrentInstance().addMessage(null, msg);
+      getMessage(msg);
     }
 
     return msg;
   }
 
+  /**
+   * @param componentId
+   * @param severity
+   * @param bundleName
+   * @param resourceId
+   * @param params
+   * @return
+   */
   public static FacesMessage getMessageForId(String componentId,
-                                             FacesMessage.Severity severity,
+                                             Severity severity,
                                              String bundleName,
                                              String resourceId,
-                                             Object[] params) {
+                                             Object... params) {
     UIComponent component = null;
-    if (componentId != null) {
+    if (null != componentId) {
       FacesContext  context   = FacesContext.getCurrentInstance();
       UIViewRoot    viewRoot  = context.getViewRoot();
-      component = viewRoot.findComponent(componentId);
+      component = findComponent(viewRoot, componentId);
     }
 
     return getMessage(component, severity, bundleName, resourceId, params);
   }
 
+  /**
+   * @param bundle
+   * @param resourceId
+   * @param params
+   * @return
+   */
   public static String getString(String bundle, String resourceId,
-                                 Object[] params) {
+                                 Object... params) {
     FacesContext  context   = FacesContext.getCurrentInstance();
     Application   app       = context.getApplication();
     String        appBundle = app.getMessageBundle();
@@ -101,49 +178,48 @@ public final class Messages {
     return getString(appBundle, bundle, resourceId, locale, loader, params);
   }
 
+  /**
+   * @param bundle1
+   * @param bundle2
+   * @param resourceId
+   * @param locale
+   * @param loader
+   * @param params
+   * @return
+   */
   public static String getString(String bundle1, String bundle2,
                                  String resourceId, Locale locale,
-                                 ClassLoader loader, Object[] params) {
+                                 ClassLoader loader, Object... params) {
     String  resource  = null;
 
-    if (bundle1 != null) {
+    if (null != bundle1) {
       ResourceBundle  bundle;
       try {
         bundle = ResourceBundle.getBundle(bundle1, locale, loader);
-        if (bundle != null)
+        if (null != bundle) {
           resource  = bundle.getString(resourceId);
-      } catch (Exception exc) {
+        }
+      } catch (Exception e) {
       }
-      if (resource == null) {
+      if (null == resource) {
         try {
           bundle = ResourceBundle.getBundle(bundle2, locale, loader);
-          if (bundle != null)
+          if (null != bundle) {
             resource = bundle.getString(resourceId);
-        } catch (Exception exc) {
+          }
+        } catch (Exception e) {
         }
       }
     }
-    if (resource == null) {
+    if (null == resource) {
       return null;
     }
-    if (params == null) {
+    if (null == params) {
       return resource;
     }
 
     MessageFormat formatter = new MessageFormat(resource, locale);
 
     return formatter.format(params);
-  }
-
-  public static Locale getLocale(FacesContext context) {
-    Locale  locale  = null;
-    UIViewRoot viewRoot = context.getViewRoot();
-    if (viewRoot != null) {
-      locale  = viewRoot.getLocale();
-    }
-    if (locale == null) {
-      locale  = Locale.getDefault();
-    }
-    return locale;
   }
 }
