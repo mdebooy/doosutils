@@ -63,10 +63,10 @@ public class ListFromCollection implements Serializable {
     private final int           cSize;
     private int                 offset;
     @SuppressWarnings("rawtypes")
-	private ArrayList           buffer;
+	  private ArrayList           buffer;
 
     @SuppressWarnings("rawtypes")
-	public ListImpl(Collection<?> collection, int size) {
+	  public ListImpl(Collection<?> collection, int size) {
       this.collection = collection;
       cSize           = collection.size();
       if (size == 0)
@@ -79,10 +79,12 @@ public class ListFromCollection implements Serializable {
       offset = -1;
     }
 
+    @Override
     public int size() {
       return cSize;
     }
 
+    @Override
     public Object get(int index) {
       if ((index < 0) || (index >= cSize)) {
         throw new IndexOutOfBoundsException();

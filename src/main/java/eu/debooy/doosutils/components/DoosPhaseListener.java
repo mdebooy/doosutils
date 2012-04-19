@@ -23,7 +23,8 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -33,7 +34,7 @@ public class DoosPhaseListener implements PhaseListener {
   private static final  long  serialVersionUID  = 1L;
 
   private static transient
-    Logger  logger  = Logger.getLogger(DoosPhaseListener.class);
+    Logger  logger  = LoggerFactory.getLogger(DoosPhaseListener.class);
 
   @Override
   public void afterPhase(PhaseEvent phaseEvent) {
@@ -47,7 +48,7 @@ public class DoosPhaseListener implements PhaseListener {
       FacesContext  context = phaseEvent.getFacesContext();
       PhaseId       phase   = phaseEvent.getPhaseId();
       String        viewId  = "none";
-      if (context.getViewRoot() != null) {
+      if (null != context.getViewRoot()) {
         viewId  = context.getViewRoot().getViewId();
       }
       logger.debug("Before: " + phase + " " + viewId);
@@ -61,8 +62,7 @@ public class DoosPhaseListener implements PhaseListener {
 
   @Override
   public PhaseId getPhaseId() {
-    // TODO Auto-generated method stub
-    return null;
+    return PhaseId.RESTORE_VIEW;
   }
 
 }
