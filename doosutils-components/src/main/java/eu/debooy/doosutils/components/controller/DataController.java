@@ -17,14 +17,11 @@
 package eu.debooy.doosutils.components.controller;
 
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.HibernateConstants;
-import eu.debooy.doosutils.components.Property;
+import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.bean.JsfBean;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.faces.event.ActionEvent;
 
 
 /**
@@ -33,54 +30,75 @@ import javax.faces.event.ActionEvent;
 public class DataController extends JsfBean {
   private static final  long  serialVersionUID  = 1L;
 
-  protected boolean     gefilterd = false;
-  protected char        aktie     = HibernateConstants.RETRIEVE;
-  protected String      subTitel  = "";
+  protected boolean     detailGefilterd = false;
+  protected boolean     gefilterd       = false;
+  protected char        aktie           = PersistenceConstants.RETRIEVE;
+  protected char        detailAktie     = PersistenceConstants.RETRIEVE;
+  protected String      detailSubTitel  = "";
+  protected String      detailType;
+  protected String      subTitel        = "";
   protected String      type;
 
+  /**
+   * @return de sub-titel van de datails.
+   */
+  public String getDetailSubTitel() {
+    return detailSubTitel;
+  }
+
+  /**
+   * @return the detailType
+   */
+  public String getDetailType() {
+    return detailType;
+  }
+
+  /**
+   * Zet de kleuren voor de JasperReport.
+   * 
+   * @param applicatie
+   * @return
+   */
   protected Map<String, String> getLijstKleuren(String applicatie) {
     Map<String, String> kleuren   = new HashMap<String, String>();
-    Property            property  =
-        (Property) getExternalContext().getSessionMap().get("properties");
 
-    String  kleur = property.value(applicatie
-                                   + ".lijst.columnheader.background");
+    String  kleur = getParameter(applicatie + ".lijst.columnheader.background");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("columnheader.background", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.columnheader.foreground");
+    kleur = getParameter(applicatie + ".lijst.columnheader.foreground");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("columnheader.foreground", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.footer.background");
+    kleur = getParameter(applicatie + ".lijst.footer.background");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("footer.background", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.footer.foreground");
+    kleur = getParameter(applicatie + ".lijst.footer.foreground");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("footer.foreground", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.row.background");
+    kleur = getParameter(applicatie + ".lijst.row.background");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("row.background", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.row.foreground");
+    kleur = getParameter(applicatie + ".lijst.row.foreground");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("row.foreground", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.row.conditional.background");
+    kleur = getParameter(applicatie + ".lijst.row.conditional.background");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("row.conditional.background", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.row.conditional.foreground");
+    kleur = getParameter(applicatie + ".lijst.row.conditional.foreground");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("row.conditional.foreground", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.titel.background");
+    kleur = getParameter(applicatie + ".lijst.titel.background");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("titel.background", kleur);
     }
-    kleur = property.value(applicatie + ".lijst.titel.foreground");
+    kleur = getParameter(applicatie + ".lijst.titel.foreground");
     if (DoosUtils.isNotBlankOrNull(kleur)) {
       kleuren.put("titel.foreground", kleur);
     }
@@ -105,6 +123,15 @@ public class DataController extends JsfBean {
   /**
    * In 'Gefilterde' mode?
    * 
+   * @return detailGefilterd
+   */
+  public boolean isDetailGefilterd() {
+    return detailGefilterd;
+  }
+
+  /**
+   * In 'Gefilterde' mode?
+   * 
    * @return gefilterd
    */
   public boolean isGefilterd() {
@@ -117,7 +144,16 @@ public class DataController extends JsfBean {
    * @return the nieuw
    */
   public boolean isNieuw() {
-    return (aktie == HibernateConstants.CREATE);
+    return (aktie == PersistenceConstants.CREATE);
+  }
+
+  /**
+   * Detail in 'Nieuw' mode?
+   * 
+   * @return the nieuw
+   */
+  public boolean isNieuwDetail() {
+    return (detailAktie == PersistenceConstants.CREATE);
   }
 
   /**
@@ -126,7 +162,16 @@ public class DataController extends JsfBean {
    * @return
    */
   public boolean isVerwijder() {
-    return (aktie == HibernateConstants.DELETE);
+    return (aktie == PersistenceConstants.DELETE);
+  }
+
+  /**
+   * Detail in 'Verwijder' mode?
+   * 
+   * @return
+   */
+  public boolean isVerwijderDetail() {
+    return (detailAktie == PersistenceConstants.DELETE);
   }
 
   /**
@@ -135,7 +180,16 @@ public class DataController extends JsfBean {
    * @return the wijzig
    */
   public boolean isWijzig() {
-    return (aktie == HibernateConstants.UPDATE);
+    return (aktie == PersistenceConstants.UPDATE);
+  }
+
+  /**
+   * Detail in 'Wijzig' mode?
+   * 
+   * @return the wijzig
+   */
+  public boolean isWijzigDetail() {
+    return (detailAktie == PersistenceConstants.UPDATE);
   }
 
   /**
@@ -144,7 +198,30 @@ public class DataController extends JsfBean {
    * @return the zoek
    */
   public boolean isZoek() {
-    return (aktie == HibernateConstants.RETRIEVE);
+    return (aktie == PersistenceConstants.RETRIEVE);
+  }
+
+  /**
+   * Detail in 'Zoek' mode?
+   * 
+   * @return the zoek
+   */
+  public boolean isZoekDetail() {
+    return (detailAktie == PersistenceConstants.RETRIEVE);
+  }
+
+  /**
+   * @param detailGefilterd
+   */
+  public void setDetailGefilterd(boolean detailGefilterd) {
+    this.detailGefilterd  = detailGefilterd;
+  }
+
+  /**
+   * @param detailType de detailType
+   */
+  public void setDetailType(String detailType) {
+    this.detailType = detailType;
   }
 
   /**
@@ -169,9 +246,9 @@ public class DataController extends JsfBean {
   }
 
   /**
-   * @param event
+   * Valideer de detail invoer.
    */
-  public void valueChangeForm(ActionEvent event) {
-    setPageDirty(Boolean.valueOf(true));
+  public boolean valideerDetailForm() {
+    return true;
   }
 }

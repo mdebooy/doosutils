@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.debooy.maven</groupId>
     <artifactId>pom</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
   </parent>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils</artifactId>
@@ -22,9 +22,9 @@
     <module>doosutils-components</module>
     <module>doosutils-core</module>
     <module>doosutils-file</module>
-    <module>doosutils-hibernate</module>
     <module>doosutils-html</module>
     <module>doosutils-latex</module>
+    <module>doosutils-persistence</module>
     <module>doosutils-test</module>
     <module>doosutils-util</module>
     <module>doosutils-web</module>

@@ -22,8 +22,7 @@ import junit.framework.TestCase;
 /**
  * @author Marco de Booij
  */
-public class DoosTest extends TestCase
-{
+public class DoosTest extends TestCase {
   protected Boolean isInitialized = Boolean.FALSE;
 
   public DoosTest(String testName) {

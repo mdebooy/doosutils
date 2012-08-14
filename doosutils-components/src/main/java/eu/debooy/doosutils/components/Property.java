@@ -27,14 +27,12 @@ import java.io.Serializable;
  */
 public class Property implements Serializable {
   private static final  long    serialVersionUID  = 1L;
-  private static final  String  JNDI_RESOURCE     =
-      IProperty.class.getCanonicalName();
 
   private IProperty propertyBean;
 
   public String value(String property) {
     propertyBean  = (IProperty) ServiceLocator.getInstance()
-                                              .getEJB(JNDI_RESOURCE);
+                                              .lookup("PropertyManagerRemote");
 
     return propertyBean.getProperty(property);
   }
