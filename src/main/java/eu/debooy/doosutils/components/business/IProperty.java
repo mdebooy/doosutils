@@ -22,7 +22,13 @@ import javax.ejb.Remote;
 /**
  * @author Marco de Booij
  */
+// TODO Toegang beperken via rollen.
 @Remote
-public abstract interface IProperty {
+public interface IProperty {
+  public void   clear();
+  public void   delete(String property);
+  // Voor iedereen
   public String getProperty(String property);
+  public void   update(String property, String waarde);
+  public int    size();
 }

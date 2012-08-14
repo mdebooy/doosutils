@@ -25,7 +25,7 @@
     </dependency>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
-      <artifactId>doosutils-hibernate</artifactId>
+      <artifactId>doosutils-persistence</artifactId>
       <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -34,9 +34,9 @@
       <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>javax</groupId>
+      <groupId>org.apache.openejb</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>6.0</version>
+      <version>6.0-4</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

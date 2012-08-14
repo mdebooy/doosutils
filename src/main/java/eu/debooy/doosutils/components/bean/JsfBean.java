@@ -17,7 +17,7 @@
 package eu.debooy.doosutils.components.bean;
 
 import eu.debooy.doosutils.components.I18nTekst;
-import eu.debooy.doosutils.components.Messages;
+import eu.debooy.doosutils.components.Property;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -62,6 +62,7 @@ public class JsfBean implements Serializable {
 
   private I18nTekst               i18nTekst = null;
   private Locale                  locale    = null;
+  private Property                property  = null;
   private String                  userId    = null;
   private String                  userName  = null;
 
@@ -119,12 +120,27 @@ public class JsfBean implements Serializable {
     }
   }
 
+  public final String getBuildDate() {
+    return buildDate;
+  }
+
   public final String getBuildVersion() {
     return buildVersion;
   }
 
-  public final String getBuildDate() {
-    return buildDate;
+  protected final ExternalContext getExternalContext() {
+    FacesContext  facesContext  = FacesContext.getCurrentInstance();
+
+    return facesContext.getExternalContext();
+  }
+
+  private I18nTekst getI18nTekst() {
+    if (null == i18nTekst) {
+      i18nTekst = (I18nTekst) getExternalContext().getSessionMap()
+                                                  .get("i18nTeksten");
+    }
+
+    return i18nTekst;
   }
 
   public final Locale getLocale() {
@@ -145,6 +161,25 @@ public class JsfBean implements Serializable {
     return formatter.format(params);
   }
 
+  /**
+   * Lees de parameter.
+   * 
+   * @param parameter
+   * @return
+   */
+  public String getParameter(String parameter) {
+    return getProperty().value(parameter);
+  }
+
+  private Property getProperty() {
+    if (null == property) {
+      property  = (Property) getExternalContext().getSessionMap()
+                                                 .get("properties");
+    }
+
+    return property;
+  }
+
   public final String getUserId() {
     if (null == userId) {
       userId  = getExternalContext().getRemoteUser();
@@ -160,21 +195,6 @@ public class JsfBean implements Serializable {
     }
 
     return userName;
-  }
-
-  protected final ExternalContext getExternalContext() {
-    FacesContext  facesContext  = FacesContext.getCurrentInstance();
-
-    return facesContext.getExternalContext();
-  }
-
-  private I18nTekst getI18nTekst() {
-    if (null == i18nTekst) {
-      i18nTekst = (I18nTekst) getExternalContext().getSessionMap()
-                                                  .get("i18nTeksten");
-    }
-
-    return i18nTekst;
   }
 
   protected final UIViewRoot getViewRoot() {
@@ -239,7 +259,7 @@ public class JsfBean implements Serializable {
     String        summary = getTekst(code, params);
     FacesMessage  msg     = new FacesMessage(severity, summary, detail);
 
-    Messages.getMessage(msg);
+    FacesContext.getCurrentInstance().addMessage(null, msg);
   }
 
   /**
@@ -340,6 +360,10 @@ public class JsfBean implements Serializable {
     return formatter.format(params);
   }
 
+  /**
+   * 
+   * @return
+   */
   public final TimeZone getTimeZone() {
     return TimeZone.getDefault();
   }
