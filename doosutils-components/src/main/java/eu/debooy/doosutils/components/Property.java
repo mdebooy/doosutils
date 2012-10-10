@@ -17,9 +17,10 @@
 package eu.debooy.doosutils.components;
 
 import eu.debooy.doosutils.components.business.IProperty;
-import eu.debooy.doosutils.service.ServiceLocator;
 
 import java.io.Serializable;
+
+import javax.ejb.EJB;
 
 
 /**
@@ -28,12 +29,10 @@ import java.io.Serializable;
 public class Property implements Serializable {
   private static final  long    serialVersionUID  = 1L;
 
+  @EJB
   private IProperty propertyBean;
 
   public String value(String property) {
-    propertyBean  = (IProperty) ServiceLocator.getInstance()
-                                              .lookup("PropertyManagerRemote");
-
     return propertyBean.getProperty(property);
   }
 }
