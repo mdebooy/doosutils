@@ -121,12 +121,21 @@ public class DataController extends JsfBean {
   }
 
   /**
-   * In 'Gefilterde' mode?
+   * In 'Bekijk' mode?
    * 
-   * @return detailGefilterd
+   * @return
    */
-  public boolean isDetailGefilterd() {
-    return detailGefilterd;
+  public boolean isBekijk() {
+    return (aktie == PersistenceConstants.RETRIEVE);
+  }
+
+  /**
+   * In 'Bekijk' mode?
+   * 
+   * @return
+   */
+  public boolean isBekijkDetail() {
+    return (detailAktie == PersistenceConstants.RETRIEVE);
   }
 
   /**
@@ -139,9 +148,18 @@ public class DataController extends JsfBean {
   }
 
   /**
+   * In 'Gefilterde' mode?
+   * 
+   * @return detailGefilterd
+   */
+  public boolean isGefilterdDetail() {
+    return detailGefilterd;
+  }
+
+  /**
    * In 'Nieuw' mode?
    * 
-   * @return the nieuw
+   * @return
    */
   public boolean isNieuw() {
     return (aktie == PersistenceConstants.CREATE);
@@ -150,10 +168,30 @@ public class DataController extends JsfBean {
   /**
    * Detail in 'Nieuw' mode?
    * 
-   * @return the nieuw
+   * @return
    */
   public boolean isNieuwDetail() {
     return (detailAktie == PersistenceConstants.CREATE);
+  }
+
+  /**
+   * In read-only mode?
+   * 
+   * @retrun
+   */
+  public boolean isReadonly() {
+    return (aktie == PersistenceConstants.DELETE)
+        || (aktie == PersistenceConstants.RETRIEVE);
+  }
+
+  /**
+   * In read-only mode?
+   * 
+   * @retrun
+   */
+  public boolean isReadonlyDetail() {
+    return (detailAktie == PersistenceConstants.DELETE)
+        || (detailAktie == PersistenceConstants.RETRIEVE);
   }
 
   /**
@@ -177,7 +215,7 @@ public class DataController extends JsfBean {
   /**
    * In 'Wijzig' mode?
    * 
-   * @return the wijzig
+   * @return
    */
   public boolean isWijzig() {
     return (aktie == PersistenceConstants.UPDATE);
@@ -186,7 +224,7 @@ public class DataController extends JsfBean {
   /**
    * Detail in 'Wijzig' mode?
    * 
-   * @return the wijzig
+   * @return
    */
   public boolean isWijzigDetail() {
     return (detailAktie == PersistenceConstants.UPDATE);
@@ -198,16 +236,16 @@ public class DataController extends JsfBean {
    * @return the zoek
    */
   public boolean isZoek() {
-    return (aktie == PersistenceConstants.RETRIEVE);
+    return (aktie == PersistenceConstants.SEARCH);
   }
 
   /**
    * Detail in 'Zoek' mode?
    * 
-   * @return the zoek
+   * @return
    */
   public boolean isZoekDetail() {
-    return (detailAktie == PersistenceConstants.RETRIEVE);
+    return (detailAktie == PersistenceConstants.SEARCH);
   }
 
   /**

@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Marco de Booij
+ * Copyright 2012 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -16,29 +16,21 @@
  */
 package eu.debooy.doosutils.components;
 
-import eu.debooy.doosutils.components.bean.JsfBean;
-import eu.debooy.doosutils.components.business.II18nTekst;
-
-import java.io.Serializable;
-
-import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-
 
 /**
+ * De verschillende export types.
+ * 
  * @author Marco de Booij
  */
-public class I18nTekst implements Serializable {
-  private static final  long  serialVersionUID  = 1L;
+public enum ExportType {
 
-  @EJB
-  private II18nTekst i18nTekstBean;
+  CSV, ODS, ODT, PDF, ONBEKEND;
 
-  public String tekst(String code) {
-    JsfBean jsfBean = (JsfBean) FacesContext.getCurrentInstance()
-                                            .getExternalContext()
-                                            .getSessionMap().get("jsf");
-
-    return i18nTekstBean.getI18nTekst(code, jsfBean.getLocale().getLanguage());
+  public static ExportType toExportType(String type) {
+    try {
+      return valueOf(type);
+    } catch (Exception ex) {
+      return ONBEKEND;
+    }
   }
 }
