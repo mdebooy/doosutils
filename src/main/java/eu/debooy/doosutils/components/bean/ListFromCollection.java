@@ -38,11 +38,11 @@ public class ListFromCollection implements Serializable {
   private Map<Collection<?>, List<?>> map;
   private int                         size;
 
-  private static  int _DEFAULT_SIZE = 50;
+  private static  int defaultSize = 50;
 
   public ListFromCollection() {
     map   = new MakeList();
-    size  = _DEFAULT_SIZE;
+    size  = defaultSize;
   }
 
   public Map<Collection<?>, List<?>> getList() {
@@ -63,15 +63,15 @@ public class ListFromCollection implements Serializable {
     private final int           cSize;
     private int                 offset;
     @SuppressWarnings("rawtypes")
-	  private ArrayList           buffer;
+    private List                buffer;
 
     @SuppressWarnings("rawtypes")
 	  public ListImpl(Collection<?> collection, int size) {
       this.collection = collection;
       cSize           = collection.size();
-      if (size == 0)
+      if (size == 0) {
         bufferSize =  cSize;
-      else {
+      }  else {
         bufferSize = Math.min(size, cSize);
       }
 

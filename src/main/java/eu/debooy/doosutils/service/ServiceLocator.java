@@ -39,12 +39,12 @@ import org.slf4j.LoggerFactory;
  * @author Marco de Booij
  */
 public final class ServiceLocator {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(ServiceLocator.class);
 
   private static  List<Context>   contexts  = new ArrayList<Context>();
   private static  ServiceLocator  locator   = new ServiceLocator();
-  
+
   private ServiceLocator() {
     Properties  env = new Properties();
     env.put("java.naming.factory.initial",
@@ -53,21 +53,23 @@ public final class ServiceLocator {
     try {
       contexts.add(new InitialContext(env));
     } catch (NamingException e) {
-      logger.error("Error in CTX lookup", e);
+      LOGGER.error("Error in CTX lookup", e);
     }
   }
 
-  public static ServiceLocator addContext(Properties env) {
-    if ((env == null) || (!(env.containsKey("java.naming.provider.url"))))
+  public ServiceLocator addContext(Properties env) {
+    if ((env == null) || (!(env.containsKey("java.naming.provider.url")))) {
       throw new IllegalArgumentException(
           "addContext: Context environment mag niet null zijn en moet "
           + "minstens 1 'provider URL' hebben.");
+    }
     try {
       Context context = new InitialContext(env);
       contexts.add(context);
     } catch (NamingException ne) {
-      logger.error("Error in CTX lookup", ne);
+      LOGGER.error("Error in CTX lookup", ne);
     }
+
     return locator;
   }
 
@@ -78,7 +80,7 @@ public final class ServiceLocator {
    * @return
    */
   public ServiceLocator forceInstance(Properties env) {
-    logger.warn("Default InitialContext wordt overschreven.");
+    LOGGER.warn("Default InitialContext wordt overschreven.");
     if ((env == null) || (!(env.containsKey("java.naming.provider.url")))) {
       throw new IllegalArgumentException(
           "forceInstance: Context environment mag niet null zijn en moet "
@@ -92,7 +94,7 @@ public final class ServiceLocator {
         contexts.add(initialContext);
       }
     } catch (NamingException ne) {
-      logger.error("Error in CTX lookup", ne);
+      LOGGER.error("Error in CTX lookup", ne);
     }
 
     return locator;
@@ -105,22 +107,21 @@ public final class ServiceLocator {
    * @return
    * @throws ServiceLocatorException
    */
-  public DataSource getDataSource(String jndi)
-      throws ServiceLocatorException {
+  public DataSource getDataSource(String jndi) {
     if (jndi == null) {
       throw new IllegalArgumentException(
           "getDataSource: JNDI mag niet null zijn.");
     }
-    logger.debug("getDataSource: Zoek JNDI " + jndi);
+    LOGGER.debug("getDataSource: Zoek JNDI " + jndi);
     DataSource datasource = (DataSource) lookup(jndi);
     if (datasource == null) {
-      logger.error("getDataSource: Kan geen datasource vinden met JNDI="
+      LOGGER.error("getDataSource: Kan geen datasource vinden met JNDI="
                    + jndi + " in geen enkele context.");
       throw new ServiceLocatorException(DoosError.OBJECT_NOT_FOUND,
                   DoosLayer.BUSINESS, "Kan geen datasource vinden met JNDI="
                   + jndi + " in geen enkele context.");
     }
-    logger.debug("getDataSource: Gevonden.");
+    LOGGER.debug("getDataSource: Gevonden.");
 
     return datasource;
   }
@@ -144,7 +145,7 @@ public final class ServiceLocator {
     NamingEnumeration<NameClassPair>  pairs = context.list("");
     for (; pairs.hasMoreElements();) {
       NameClassPair pair  = pairs.next();
-      logger.debug(string + "/" + pair.getName() + " " + pair.getClassName());
+      LOGGER.debug(string + "/" + pair.getName() + " " + pair.getClassName());
       Object obj  = context.lookup(pair.getName());
       if (obj instanceof Context) {
         Context child = (Context) obj;
@@ -172,21 +173,21 @@ public final class ServiceLocator {
    * @return
    */
   public Object lookup(String jndi) {
-    logger.debug("Zoek JNDI: " + jndi);
+    LOGGER.debug("Zoek JNDI: " + jndi);
     for (Context context : contexts) {
-      if (logger.isDebugEnabled()) {
+      if (LOGGER.isDebugEnabled()) {
         try {
           listContext("", context);
         } catch (NamingException e) {
-          logger.error("JNDI: " + jndi + " [" + e.getMessage() + "]");
+          LOGGER.error("JNDI: " + jndi + " [" + e.getMessage() + "]");
         }
       }
       try {
         Object object = context.lookup(jndi);
-        logger.debug("Object: " + object.getClass().getCanonicalName());
+        LOGGER.debug("Object: " + object.getClass().getCanonicalName());
         return object;
       } catch (NamingException e) {
-        logger.error("JNDI: " + jndi + " [" + e.getMessage() + "]");
+        LOGGER.error("JNDI: " + jndi + " [" + e.getMessage() + "]");
         throw new IllegalArgumentException(e);
       }
     }
@@ -202,7 +203,7 @@ public final class ServiceLocator {
     try {
       contexts.add(new InitialContext());
     } catch (NamingException e) {
-      logger.error("Error in CTX lookup", e);
+      LOGGER.error("Error in CTX lookup", e);
     }
     locator   = new ServiceLocator();
   }
