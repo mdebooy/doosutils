@@ -29,8 +29,6 @@ import java.sql.SQLException;
  */
 public class PersistenceEJBExceptionUtil {
   public DoosRuntimeException transform(SQLException th) {
-    switch (th.getErrorCode()) {
-    }
     return new TechnicalException(DoosError.RUNTIME_EXCEPTION,
         DoosLayer.PERSISTENCE, th.getMessage(), th);
   }

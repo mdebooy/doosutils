@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Marco de Booij
+ * Copyright 2012 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -14,21 +14,30 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.doosutils.errorhandling.handler.base;
+package eu.debooy.doosutils.test;
 
-import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
-import eu.debooy.doosutils.errorhandling.exception.base.IDoosException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
-import java.io.Serializable;
+import org.junit.Before;
 
 
 /**
  * @author Marco de Booij
  */
-public abstract interface IExceptionHandler extends Serializable {
-  boolean   isObjectNotFoundPattern();
-  DoosLayer getLayer();
-  String    getName();
-  void      handle(Throwable throwable);
-  void      log(IDoosException doosException);
+public class DoosJpaTest extends DoosTest {
+  private EntityManager     em;
+  private EntityTransaction et;
+
+  public DoosJpaTest(String testName) {
+    super(testName);
+  }
+
+  @Before
+  public void setUp() {
+    em  = Persistence.createEntityManagerFactory("test")
+                     .createEntityManager();
+    et  = em.getTransaction();
+  }
 }

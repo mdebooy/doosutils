@@ -22,6 +22,7 @@ import eu.debooy.doosutils.components.Property;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.Principal;
@@ -50,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public class JsfBean implements Serializable {
   private static final long      serialVersionUID       = 1L;
 
-  private final transient Logger logger                 =
+  private final transient Logger LOGGER                 =
       LoggerFactory.getLogger(JsfBean.class.getName());
   public  static final  String    BEAN_NAME             = "jsf";
   private static final  String    SESSION_DIRTYPAGE_KEY = "page.dirty";
@@ -71,8 +72,8 @@ public class JsfBean implements Serializable {
   }
 
   public JsfBean() {
-    if (logger.isTraceEnabled()) {
-      logger.trace("JsfBean gemaakt.");
+    if (LOGGER.isTraceEnabled()) {
+      LOGGER.trace("JsfBean gemaakt.");
     }
   }
 
@@ -393,7 +394,16 @@ public class JsfBean implements Serializable {
       try {
         Method method = bean.getClass().getMethod(methodName, new Class[0]);
         method.invoke(bean, new Object[0]);
-      } catch (Exception exc) {
+      } catch (SecurityException e) {
+        LOGGER.error("SecurityException: " + e.getMessage());
+      } catch (NoSuchMethodException e) {
+        LOGGER.error("NoSuchMethodException: " + e.getMessage());
+      } catch (IllegalArgumentException e) {
+        LOGGER.error("IllegalArgumentException: " + e.getMessage());
+      } catch (IllegalAccessException e) {
+        LOGGER.error("IllegalAccessException: " + e.getMessage());
+      } catch (InvocationTargetException e) {
+        LOGGER.error("InvocationTargetException: " + e.getMessage());
       }
     }
   }

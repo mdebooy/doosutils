@@ -34,28 +34,29 @@ public class DoosPhaseListener implements PhaseListener {
   private static final  long  serialVersionUID  = 1L;
 
   private static transient
-    Logger  logger  = LoggerFactory.getLogger(DoosPhaseListener.class);
+    Logger  LOGGER  = LoggerFactory.getLogger(DoosPhaseListener.class);
 
   @Override
   public void afterPhase(PhaseEvent phaseEvent) {
-    logger.debug("After: " + phaseEvent.getPhaseId());
+    LOGGER.debug("After: " + phaseEvent.getPhaseId());
   }
 
   @Override
   public void beforePhase(PhaseEvent phaseEvent) {
     Map<String, ?>  reqParams;
-    if (logger.isTraceEnabled()) {
+    if (LOGGER.isTraceEnabled()) {
       FacesContext  context = phaseEvent.getFacesContext();
       PhaseId       phase   = phaseEvent.getPhaseId();
       String        viewId  = "none";
       if (null != context.getViewRoot()) {
         viewId  = context.getViewRoot().getViewId();
       }
-      logger.debug("Before: " + phase + " " + viewId);
+      LOGGER.debug("Before: " + phase + " " + viewId);
       if (PhaseId.RESTORE_VIEW.equals(phase)) {
         reqParams = context.getExternalContext().getRequestParameterMap();
-        for (String key : reqParams.keySet())
-          logger.debug("   " + key + ": " + ((String)reqParams.get(key)));
+        for (String key : reqParams.keySet()) {
+          LOGGER.debug("   " + key + ": " + ((String)reqParams.get(key)));
+        }
       }
     }
   }

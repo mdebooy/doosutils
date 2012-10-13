@@ -23,7 +23,8 @@ import eu.debooy.doosutils.domain.Dto;
  * @author Marco de Booij
  */
 public abstract class Model<T extends Dto> {
-  protected Class<T>  dto;
+  @SuppressWarnings("unused")
+  private Class<T>  dto;
 
   public Model(Class<T> dto) {
     this.dto  = dto;

@@ -30,24 +30,38 @@ import java.util.Map;
 public class DataController extends JsfBean {
   private static final  long  serialVersionUID  = 1L;
 
-  protected boolean     detailGefilterd = false;
-  protected boolean     gefilterd       = false;
-  protected char        aktie           = PersistenceConstants.RETRIEVE;
-  protected char        detailAktie     = PersistenceConstants.RETRIEVE;
-  protected String      detailSubTitel  = "";
-  protected String      detailType;
-  protected String      subTitel        = "";
-  protected String      type;
+  private boolean     detailGefilterd = false;
+  private boolean     gefilterd       = false;
+  private char        aktie           = PersistenceConstants.RETRIEVE;
+  private char        detailAktie     = PersistenceConstants.RETRIEVE;
+  private String      detailSubTitel  = "";
+  private String      detailType;
+  private String      subTitel        = "";
+  private String      type;
 
   /**
-   * @return de sub-titel van de datails.
+   * @return de aktie
+   */
+  public char getAktie() {
+    return aktie;
+  }
+
+  /**
+   * @return de aktie van de details.
+   */
+  public char getDetailAktie() {
+    return detailAktie;
+  }
+
+  /**
+   * @return de sub-titel van de details.
    */
   public String getDetailSubTitel() {
     return detailSubTitel;
   }
 
   /**
-   * @return the detailType
+   * @return de detailType
    */
   public String getDetailType() {
     return detailType;
@@ -249,10 +263,31 @@ public class DataController extends JsfBean {
   }
 
   /**
+   * @param aktie
+   */
+  public void setAktie(char aktie) {
+    this.aktie  = aktie;
+  }
+
+  /**
+   * @param aktie
+   */
+  public void setDetailAktie(char detailAktie) {
+    this.detailAktie  = detailAktie;
+  }
+
+  /**
    * @param detailGefilterd
    */
   public void setDetailGefilterd(boolean detailGefilterd) {
     this.detailGefilterd  = detailGefilterd;
+  }
+
+  /**
+   * @param detailSubTitel de detailSubTitel
+   */
+  public void setDetailSubTitel(String detailSubTitel) {
+    this.detailSubTitel = detailSubTitel;
   }
 
   /**
@@ -267,6 +302,13 @@ public class DataController extends JsfBean {
    */
   public void setGefilterd(boolean gefilterd) {
     this.gefilterd  = gefilterd;
+  }
+
+  /**
+   * @param subTitel de subTitel
+   */
+  public void setSubTitel(String subTitel) {
+    this.subTitel = subTitel;
   }
 
   /**

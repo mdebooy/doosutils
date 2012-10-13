@@ -30,14 +30,14 @@ import org.slf4j.LoggerFactory;
  * @author Marco de Booij
  */
 public class JNDI {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(JNDI.class);
 
   public static class JNDINaam {
     private StringBuilder jndi;
-    private final static  String INTERFACE_SEPARATOR  = "!";
-    private final static  String PREFIX               = "java:global/localhost";
-    private final static  String SEPARATOR            = "/";
+    private static final  String INTERFACE_SEPARATOR  = "!";
+    private static final  String PREFIX               = "java:global/localhost";
+    private static final  String SEPARATOR            = "/";
     private String      appNaam;
     private String      beanNaam;
     private String      interfaceNaam;
@@ -143,7 +143,7 @@ public class JNDI {
       if (DoosUtils.isNotBlankOrNull(interfaceNaam)) {
         jndi.append(interfaceSeparator).append(interfaceNaam);
       }
-      logger.debug("JNDI: " + jndi.toString());
+      LOGGER.debug("JNDI: " + jndi.toString());
 
       return jndi.toString();
     }

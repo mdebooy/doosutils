@@ -25,7 +25,7 @@ import java.rmi.RemoteException;
  * @author Marco de Booij
  */
 public final class ExceptionLogUtil {
-  private static final int _MAX_DEPTH = 5;
+  private static final int MAX_DEPTH = 5;
 
   private ExceptionLogUtil() {}
 
@@ -42,10 +42,10 @@ public final class ExceptionLogUtil {
   }
 
   private static Throwable getRootCause(Throwable cause, int level) {
-    if ((level++ < _MAX_DEPTH) 
-        && (cause != null)) {
-      if (cause.getCause() != null) {
-        getRootCause(cause, level);
+    if (level < (MAX_DEPTH - 1) 
+        && null != cause) {
+      if (null != cause.getCause()) {
+        getRootCause(cause, (level + 1));
       } else {
         return cause;
       }
@@ -70,9 +70,9 @@ public final class ExceptionLogUtil {
     cause.printStackTrace(new PrintWriter(sw));
     StringBuffer  sb      = sw.getBuffer();
     String        result  = null;
-    if (sb.length() > 4000)
+    if (sb.length() > 4000) {
       result  = sb.substring(0, 3999);
-    else {
+    } else {
       result  = sb.toString();
     }
 

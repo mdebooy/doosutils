@@ -40,7 +40,7 @@ import javax.persistence.PersistenceException;
 public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   private static final  long  serialVersionUID  = 1L;
 
-  static  PersistenceEJBExceptionUtil util  = null;
+  private static  PersistenceEJBExceptionUtil util  = null;
 
   public PersistenceEJBExceptionHandler(String name, DoosLayer layer,
                                         boolean objectNotFoundPattern) {
@@ -59,10 +59,11 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
       throw new WrappedException(getLayer(), ie);
     } catch (DoosRuntimeException ire) {
       log(ire);
-      if ((ire instanceof WrappedException))
+      if ((ire instanceof WrappedException)) {
         handle(unwrapException((WrappedException) ire));
-      else
+      } else {
         throw ire;
+      }
     } catch (NoResultException e) {
       DoosRuntimeException  de  =
           new ObjectNotFoundException(DoosLayer.PERSISTENCE,
@@ -128,11 +129,11 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   }
 
   public static Throwable findRootCause(Throwable t, int nbTimes) {
-    if (null != t) {
+    Throwable targetException = t;
+    if (null != targetException) {
       try {
-        Throwable targetException = null;
-        String exceptionProperty = "targetException";
         // TODO Vind de PropertyUtils
+//        String exceptionProperty = "targetException";
 //        if (PropertyUtils.isReadable(t, exceptionProperty)) {
 //          targetException = (Throwable) PropertyUtils.getProperty(t,
 //              exceptionProperty);
@@ -143,22 +144,22 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
 //                exceptionProperty);
 //          }
 //        }
-        if (null != targetException) {
-          t = targetException;
-        }
+//        if (null != targetException) {
+//          t = targetException;
+//        }
       } catch (Exception ex) {
         ex.printStackTrace();
       }
 
-      if ((null != t.getCause()) && (nbTimes != 0)) {
-        t = t.getCause();
-        if ((t instanceof SQLException)) {
-          return util.transform((SQLException) t);
+      if ((null != targetException.getCause()) && (nbTimes != 0)) {
+        targetException = t.getCause();
+        if ((targetException instanceof SQLException)) {
+          return util.transform((SQLException) targetException);
         }
-        t = findRootCause(t, nbTimes--);
+        targetException = findRootCause(targetException, nbTimes--);
       }
     }
 
-    return t;
+    return targetException;
   }
 }
