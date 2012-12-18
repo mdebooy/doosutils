@@ -197,7 +197,9 @@ public final class Bestand {
         if (file.isDirectory()) {
           verwijderDirectory(file);
         } else {
-          file.delete();
+          if (!file.delete()) {
+            return false;
+          }
         }
       }
     }

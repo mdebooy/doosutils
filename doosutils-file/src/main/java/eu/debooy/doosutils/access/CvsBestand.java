@@ -277,7 +277,7 @@ public class CvsBestand {
         if (i < hulp.length) {
           i++;
         }
-        veld  = veld + fieldSeparator + hulp[i];
+        veld  += fieldSeparator + hulp[i];
       }
       if (veld.startsWith(delimiter)
           && veld.endsWith(delimiter)) {

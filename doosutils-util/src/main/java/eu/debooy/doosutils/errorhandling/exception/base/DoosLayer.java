@@ -23,7 +23,7 @@ package eu.debooy.doosutils.errorhandling.exception.base;
 public enum DoosLayer {
   PRESENTATION, BUSINESS, PERSISTENCE, SYSTEM, UNDEFINED;
 
-  private final String value  = "N/A";
+  private String value  = "N/A";
 
   public String getLayer() {
     return this.value;

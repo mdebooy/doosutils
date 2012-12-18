@@ -83,19 +83,23 @@ public final class ZipBestand {
     } catch (IOException e) {
       throw new BestandException(e);
     } finally {
+      IOException ie  = null;
       if (null != bron) {
         try {
           bron.close();
         } catch (IOException e) {
-          throw new BestandException(e);
+          ie = e;
         }
       }
       if (null != fos) {
         try {
           fos.close();
         } catch (IOException e) {
-          throw new BestandException(e);
+          ie = e;
         }
+      }
+      if (null != ie) {
+        throw new BestandException(ie);
       }
     }
   }
