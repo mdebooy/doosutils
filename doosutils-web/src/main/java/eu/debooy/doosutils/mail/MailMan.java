@@ -38,7 +38,9 @@ import javax.mail.internet.MimeMessage;
  * attachments is not yet implemented. </i> <br/>
  */
 // @TODO Implement attachments.
-public class MailMan {
+public final class MailMan {
+  private MailMan() {}
+
   public static void sendMail(String from, String to, String subject,
                               String messageText) throws MessagingException {
     Properties  properties  = new Properties();

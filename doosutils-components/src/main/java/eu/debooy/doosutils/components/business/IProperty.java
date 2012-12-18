@@ -16,13 +16,23 @@
  */
 package eu.debooy.doosutils.components.business;
 
+import java.util.Map;
+
 import javax.ejb.Remote;
 
 
 /**
  * @author Marco de Booij
  */
+// TODO Toegang beperken via rollen.
 @Remote
-public abstract interface IProperty {
-  public String getProperty(String property);
+public interface IProperty {
+  void                clear();
+  void                delete(String property);
+  Map<String, String> getProperties(String applicatie);
+  // Voor iedereen
+  String              getProperty(String property);
+  void                update(String applicatie, Map<String, String> properties);
+  void                update(String property, String waarde);
+  int                 size();
 }

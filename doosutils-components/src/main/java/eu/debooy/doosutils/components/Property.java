@@ -17,25 +17,24 @@
 package eu.debooy.doosutils.components;
 
 import eu.debooy.doosutils.components.business.IProperty;
-import eu.debooy.doosutils.service.ServiceLocator;
 
 import java.io.Serializable;
+
+import javax.ejb.EJB;
 
 
 /**
  * @author Marco de Booij
  */
+//@Named("properties")
+//@SessionScoped
 public class Property implements Serializable {
   private static final  long    serialVersionUID  = 1L;
-  private static final  String  JNDI_RESOURCE     =
-      IProperty.class.getCanonicalName();
 
+  @EJB
   private IProperty propertyBean;
 
   public String value(String property) {
-    propertyBean  = (IProperty) ServiceLocator.getInstance()
-                                              .getEJB(JNDI_RESOURCE);
-
     return propertyBean.getProperty(property);
   }
 }

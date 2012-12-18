@@ -37,7 +37,9 @@ import java.util.zip.ZipOutputStream;
 /**
  * @author Marco de Booij
  */
-public class ZipBestand {
+public final class ZipBestand {
+  private ZipBestand() {}
+
   public static void inpakken(String bron, String zip) throws BestandException {
     ZipOutputStream doel  = null;
     try {
@@ -58,7 +60,8 @@ public class ZipBestand {
 
   public static void uitpakken(String zip, String doel)
       throws BestandException {
-    ZipFile bron  = null;
+    ZipFile           bron  = null;
+    FileOutputStream  fos   = null;
     try {
       bron  = new ZipFile(zip);
       Enumeration<? extends ZipEntry> entries = bron.entries();
@@ -68,8 +71,8 @@ public class ZipBestand {
         if (entry.isDirectory()) {
           bestand.mkdir();
         } else {
-          InputStream       is  = bron.getInputStream(entry);
-          FileOutputStream  fos = new FileOutputStream(bestand);
+          InputStream is  = bron.getInputStream(entry);
+          fos = new FileOutputStream(bestand);
           while (is.available() > 0) {
             fos.write(is.read());
           }
@@ -80,12 +83,23 @@ public class ZipBestand {
     } catch (IOException e) {
       throw new BestandException(e);
     } finally {
+      IOException ie  = null;
       if (null != bron) {
         try {
           bron.close();
         } catch (IOException e) {
-          throw new BestandException(e);
+          ie = e;
         }
+      }
+      if (null != fos) {
+        try {
+          fos.close();
+        } catch (IOException e) {
+          ie = e;
+        }
+      }
+      if (null != ie) {
+        throw new BestandException(ie);
       }
     }
   }
@@ -100,7 +114,6 @@ public class ZipBestand {
       if (bron.isDirectory()) {
         if (!bestand.isEmpty()) {
           if (!bestand.endsWith("/")) {
-            bestand     += "/";
             zipBestand  += "/";
           }
           ZipEntry  entry = new ZipEntry(zipBestand);
@@ -108,8 +121,9 @@ public class ZipBestand {
           doel.putNextEntry(entry);
           doel.closeEntry();
         }
-        for (File nestedFile : bron.listFiles())
+        for (File nestedFile : bron.listFiles()) {
           add(nestedFile, basis, doel);
+        }
         return;
       }
 

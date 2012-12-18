@@ -16,28 +16,32 @@
  */
 package eu.debooy.doosutils.components;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.components.bean.JsfBean;
 import eu.debooy.doosutils.components.business.II18nTekst;
-import eu.debooy.doosutils.service.ServiceLocator;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 
 
 /**
  * @author Marco de Booij
  */
+//@Named("i18nTeksten")
+//@SessionScoped
 public class I18nTekst implements Serializable {
-  private static final  long    serialVersionUID  = 1L;
-  private static final  String  JNDI_RESOURCE     =
-      II18nTekst.class.getCanonicalName();
+  private static final  long  serialVersionUID  = 1L;
 
-  private II18nTekst i18nTekstBean;
+  @EJB
+  private II18nTekst  i18nTekstBean;
 
   public String tekst(String code) {
-    i18nTekstBean = (II18nTekst) ServiceLocator.getInstance()
-                                               .getEJB(JNDI_RESOURCE);
+    if (DoosUtils.isBlankOrNull(code)) {
+      return "<null>";
+    }
+
     JsfBean jsfBean = (JsfBean) FacesContext.getCurrentInstance()
                                             .getExternalContext()
                                             .getSessionMap().get("jsf");

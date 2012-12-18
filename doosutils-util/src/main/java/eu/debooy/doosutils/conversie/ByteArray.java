@@ -29,7 +29,7 @@ import java.io.ObjectOutputStream;
 public final class ByteArray {
   private ByteArray() {}
 
-  public static Object ByteArrayToObject(byte[] byteArray) throws IOException {
+  public static Object byteArrayToObject(byte[] byteArray) throws IOException {
     ByteArrayInputStream  bais    = new ByteArrayInputStream(byteArray);
     ObjectInputStream     ois     = null;
     Object                object  = null;

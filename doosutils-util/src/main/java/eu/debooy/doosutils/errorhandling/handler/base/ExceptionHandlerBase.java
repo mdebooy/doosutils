@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public abstract class ExceptionHandlerBase implements IExceptionHandler {
   private static final  long  serialVersionUID  = 1L;
 
-  private static final Logger logger                =
+  private static final Logger LOGGER                =
       LoggerFactory.getLogger(ExceptionHandlerBase.class);
   private String              name;
   private DoosLayer           layer;
@@ -45,7 +45,7 @@ public abstract class ExceptionHandlerBase implements IExceptionHandler {
   public void log(IDoosException e) {
     if ((Boolean.TRUE.booleanValue() != e.isLoggable())
         && (Boolean.TRUE.booleanValue() != e.isLogged())) {
-      logger.error("IDoosException logged by " + getName() + " handler",
+      LOGGER.error("IDoosException logged by " + getName() + " handler",
                    (Throwable) e);
 
       e.setLoggedTrue();

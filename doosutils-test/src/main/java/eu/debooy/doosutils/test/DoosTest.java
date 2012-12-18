@@ -22,27 +22,29 @@ import junit.framework.TestCase;
 /**
  * @author Marco de Booij
  */
-public class DoosTest extends TestCase
-{
-  protected Boolean isInitialized = Boolean.FALSE;
+public class DoosTest extends TestCase {
+  private Boolean initialized = Boolean.FALSE;
 
   public DoosTest(String testName) {
     super(testName);
   }
 
-  @Override
-  public void setUp() {
-    System.out.println("In setUp method");
-    if (Boolean.TRUE == this.isInitialized) {
-      return;
-    }
-
-    this.isInitialized = Boolean.TRUE;
+  public Boolean isInitialized() {
+    return initialized;
   }
 
   @Override
-  protected void tearDown() throws Exception
-  {
+  public void setUp() {
+    System.out.println("In setUp method");
+    if (Boolean.TRUE == this.initialized) {
+      return;
+    }
+
+    this.initialized = Boolean.TRUE;
+  }
+
+  @Override
+  protected void tearDown() throws Exception {
     System.out.println("In tearDown method");
     super.tearDown();
   }

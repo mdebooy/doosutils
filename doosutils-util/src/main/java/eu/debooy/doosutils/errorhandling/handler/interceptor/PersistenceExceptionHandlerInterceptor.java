@@ -46,15 +46,12 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
 
   @AroundInvoke
   public Object handleException(InvocationContext invocation) throws Exception {
-    Object  object  = null;
-    try {
-      object  = invocation.proceed();
-    } catch (Throwable t) {
-      this.handler.handle(t);
-    }
+    Object  object  = invocation.proceed();
+
     if (this.handler.isObjectNotFoundPattern()) {
       handleObjectNotFoundPattern(invocation, object);
     }
+
     return object;
   }
 
@@ -64,9 +61,9 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
       throws ObjectNotFoundException {
     ObjectNotFoundException e = null;
     if (!"void".equals(invocation.getMethod().getReturnType().getName())) {
-      if (null == object)
+      if (null == object) {
         e = buildObjectNotFoundException(invocation);
-      else if (((object instanceof Collection))
+      } else if (((object instanceof Collection))
           && (((Collection) object).size() == 0)) {
         e = buildObjectNotFoundException(invocation);
       }

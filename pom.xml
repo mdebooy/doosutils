@@ -4,27 +4,27 @@
   <parent>
     <groupId>eu.debooy.maven</groupId>
     <artifactId>pom</artifactId>
-    <version>1.0.3</version>
+    <version>1.1.0</version>
   </parent>
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.1.1</version>
   <name>Utility classes voor DOOS Applicaties</name>
   <description>Utility classes voor DOOS Applicaties.</description>
   <inceptionYear>2009</inceptionYear>
   <scm>
-    <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk</developerConnection>
-    <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk</connection>
+    <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/tags/doosutils-1.1.1</developerConnection>
+    <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/tags/doosutils-1.1.1</connection>
   </scm>
 
   <modules>
     <module>doosutils-components</module>
     <module>doosutils-core</module>
     <module>doosutils-file</module>
-    <module>doosutils-hibernate</module>
     <module>doosutils-html</module>
     <module>doosutils-latex</module>
+    <module>doosutils-persistence</module>
     <module>doosutils-test</module>
     <module>doosutils-util</module>
     <module>doosutils-web</module>

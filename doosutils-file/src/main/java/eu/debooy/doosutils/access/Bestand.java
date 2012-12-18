@@ -34,7 +34,9 @@ import java.nio.charset.Charset;
 /**
  * @author Marco de Booij
  */
-public class Bestand {
+public final class Bestand {
+  private Bestand() {}
+
   public static BufferedReader openInvoerBestand(File bestand)
       throws BestandException {
     return openInvoerBestand(bestand, Charset.defaultCharset().name());
@@ -195,7 +197,9 @@ public class Bestand {
         if (file.isDirectory()) {
           verwijderDirectory(file);
         } else {
-          file.delete();
+          if (!file.delete()) {
+            return false;
+          }
         }
       }
     }

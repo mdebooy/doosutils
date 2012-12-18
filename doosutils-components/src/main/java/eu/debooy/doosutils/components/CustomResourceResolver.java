@@ -27,14 +27,18 @@ import com.sun.facelets.impl.ResourceResolver;
  */
 public class CustomResourceResolver extends DefaultResourceResolver
     implements ResourceResolver {
+  @Override
   public URL resolveUrl(String path) {
     URL resourceUrl = super.resolveUrl(path);
+
     if (resourceUrl == null) {
       if (path.startsWith("/")) {
-        path  = path.substring(1);
+        resourceUrl = Thread.currentThread().getContextClassLoader()
+                            .getResource(path.substring(1));
+      } else {
+        resourceUrl = Thread.currentThread().getContextClassLoader()
+                            .getResource(path);
       }
-      resourceUrl = Thread.currentThread().getContextClassLoader()
-                          .getResource(path);
     }
     return resourceUrl;
   }

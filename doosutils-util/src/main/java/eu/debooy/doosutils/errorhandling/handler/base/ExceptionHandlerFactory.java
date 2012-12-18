@@ -24,7 +24,9 @@ import eu.debooy.doosutils.errorhandling.handler.PersistenceEJBExceptionHandler;
 /**
  * @author Marco de Booij
  */
-public class ExceptionHandlerFactory {
+public final class ExceptionHandlerFactory {
+  private ExceptionHandlerFactory() {}
+
   private static  IExceptionHandler businessHandler     =
       new DefaultEJBExceptionHandler("Business EJB Exception Handler",
                                      DoosLayer.BUSINESS, true);

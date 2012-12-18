@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,7 +119,7 @@ public class CvsBestand {
    * @return array met Kolom Namen.
    */
   public String[] getKolomNamen() {
-    return kolomNamen;
+    return Arrays.copyOf(kolomNamen, kolomNamen.length);
   }
 
   /**
@@ -169,7 +170,7 @@ public class CvsBestand {
    * Open een CSV bestand.
    * @param bestand  naam van het bestand
    */
-  private final void openBestand(String bestand) throws BestandException {
+  private void openBestand(String bestand) throws BestandException {
     eof = false;
 
     try {
@@ -251,7 +252,11 @@ public class CvsBestand {
    * @param kolomNamen the kolomNamen to set
    */
   public void setKolomNamen(String[] kolomNamen) {
-    this.kolomNamen = kolomNamen;
+    if (null == kolomNamen) { 
+      this.kolomNamen = new String[0]; 
+    } else { 
+      this.kolomNamen = Arrays.copyOf(kolomNamen, kolomNamen.length); 
+    }
   }
 
   /**
@@ -272,7 +277,7 @@ public class CvsBestand {
         if (i < hulp.length) {
           i++;
         }
-        veld  = veld + fieldSeparator + hulp[i];
+        veld  += fieldSeparator + hulp[i];
       }
       if (veld.startsWith(delimiter)
           && veld.endsWith(delimiter)) {

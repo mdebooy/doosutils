@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Marco de Booij
+ * Copyright 2012 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -14,15 +14,23 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.doosutils;
+package eu.debooy.doosutils.components;
 
 
 /**
+ * De verschillende export types.
+ * 
  * @author Marco de Booij
  */
-public final class HibernateConstants {
-  public static final char  CREATE    = 'C';
-  public static final char  RETRIEVE  = 'R';
-  public static final char  UPDATE    = 'U';
-  public static final char  DELETE    = 'D';
+public enum ExportType {
+
+  CSV, ODS, ODT, PDF, ONBEKEND;
+
+  public static ExportType toExportType(String type) {
+    try {
+      return valueOf(type);
+    } catch (Exception ex) {
+      return ONBEKEND;
+    }
+  }
 }

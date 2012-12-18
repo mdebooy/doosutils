@@ -22,8 +22,13 @@ import javax.ejb.Remote;
 /**
  * @author Marco de Booij
  */
+// TODO Toegang beperken via rollen.
 @Remote
-public abstract interface II18nTekst {
-  public String getI18nTekst(String code);
-  public String getI18nTekst(String code, String taal);
+public interface II18nTekst {
+  void   clear();
+  // Voor iedereen
+  String getI18nTekst(String code);
+  // Voor iedereen
+  String getI18nTekst(String code, String taal);
+  int    size();
 }

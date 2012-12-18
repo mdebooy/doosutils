@@ -26,9 +26,9 @@ import java.io.Serializable;
  * @author Marco de Booij
  */
 public abstract interface IExceptionHandler extends Serializable {
-  public abstract boolean   isObjectNotFoundPattern();
-  public abstract DoosLayer getLayer();
-  public abstract String    getName();
-  public abstract void      handle(Throwable throwable);
-  public abstract void      log(IDoosException doosException);
+  boolean   isObjectNotFoundPattern();
+  DoosLayer getLayer();
+  String    getName();
+  void      handle(Throwable throwable);
+  void      log(IDoosException doosException);
 }
