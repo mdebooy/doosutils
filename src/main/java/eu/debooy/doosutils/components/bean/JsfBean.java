@@ -49,9 +49,9 @@ import org.slf4j.LoggerFactory;
  * @author Marco de Booij
  */
 public class JsfBean implements Serializable {
-  private static final long      serialVersionUID       = 1L;
+  private static final  long      serialVersionUID      = 1L;
 
-  private final transient Logger LOGGER                 =
+  private static final  Logger    LOGGER                =
       LoggerFactory.getLogger(JsfBean.class.getName());
   public  static final  String    BEAN_NAME             = "jsf";
   private static final  String    SESSION_DIRTYPAGE_KEY = "page.dirty";

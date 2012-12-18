@@ -26,6 +26,8 @@ import javax.ejb.EJB;
 /**
  * @author Marco de Booij
  */
+//@Named("properties")
+//@SessionScoped
 public class Property implements Serializable {
   private static final  long    serialVersionUID  = 1L;
 

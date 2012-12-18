@@ -16,6 +16,7 @@
  */
 package eu.debooy.doosutils.components;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.components.bean.JsfBean;
 import eu.debooy.doosutils.components.business.II18nTekst;
 
@@ -28,13 +29,19 @@ import javax.faces.context.FacesContext;
 /**
  * @author Marco de Booij
  */
+//@Named("i18nTeksten")
+//@SessionScoped
 public class I18nTekst implements Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   @EJB
-  private II18nTekst i18nTekstBean;
+  private II18nTekst  i18nTekstBean;
 
   public String tekst(String code) {
+    if (DoosUtils.isBlankOrNull(code)) {
+      return "<null>";
+    }
+
     JsfBean jsfBean = (JsfBean) FacesContext.getCurrentInstance()
                                             .getExternalContext()
                                             .getSessionMap().get("jsf");

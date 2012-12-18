@@ -36,7 +36,7 @@ public class JNDI {
   public static class JNDINaam {
     private StringBuilder jndi;
     private static final  String INTERFACE_SEPARATOR  = "!";
-    private static final  String PREFIX               = "java:global/localhost";
+    private static final  String PREFIX               = "java:global";
     private static final  String SEPARATOR            = "/";
     private String      appNaam;
     private String      beanNaam;
