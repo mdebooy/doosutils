@@ -9,13 +9,13 @@
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.1</version>
+  <version>1.1.2-SNAPSHOT</version>
   <name>Utility classes voor DOOS Applicaties</name>
   <description>Utility classes voor DOOS Applicaties.</description>
   <inceptionYear>2009</inceptionYear>
   <scm>
-    <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/tags/doosutils-1.1.1</developerConnection>
-    <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/tags/doosutils-1.1.1</connection>
+    <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk</developerConnection>
+    <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk</connection>
   </scm>
 
   <modules>
