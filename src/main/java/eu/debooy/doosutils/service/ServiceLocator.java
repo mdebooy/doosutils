@@ -141,7 +141,8 @@ public final class ServiceLocator {
    * @param context
    * @throws NamingException
    */
-  private void listContext(String string, Context context) throws NamingException {
+  private void listContext(String string, Context context)
+      throws NamingException {
     NamingEnumeration<NameClassPair>  pairs = context.list("");
     for (; pairs.hasMoreElements();) {
       NameClassPair pair  = pairs.next();

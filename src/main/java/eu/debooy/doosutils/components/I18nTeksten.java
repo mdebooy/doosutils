@@ -17,21 +17,23 @@
 package eu.debooy.doosutils.components;
 
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.components.bean.JsfBean;
+import eu.debooy.doosutils.components.bean.Gebruiker;
 import eu.debooy.doosutils.components.business.II18nTekst;
+import eu.debooy.doosutils.service.CDI;
 
 import java.io.Serializable;
 
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 
 /**
  * @author Marco de Booij
  */
-//@Named("i18nTeksten")
-//@SessionScoped
-public class I18nTekst implements Serializable {
+@Named
+@SessionScoped
+public class I18nTeksten implements Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   @EJB
@@ -42,10 +44,9 @@ public class I18nTekst implements Serializable {
       return "<null>";
     }
 
-    JsfBean jsfBean = (JsfBean) FacesContext.getCurrentInstance()
-                                            .getExternalContext()
-                                            .getSessionMap().get("jsf");
+    Gebruiker gebruiker = (Gebruiker) CDI.getBean("gebruiker");
 
-    return i18nTekstBean.getI18nTekst(code, jsfBean.getLocale().getLanguage());
+    return i18nTekstBean.getI18nTekst(code,
+                                      gebruiker.getLocale().getLanguage());
   }
 }
