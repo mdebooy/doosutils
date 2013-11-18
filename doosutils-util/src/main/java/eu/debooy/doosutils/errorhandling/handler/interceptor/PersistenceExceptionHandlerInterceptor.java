@@ -45,17 +45,30 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
   }
 
   @AroundInvoke
-  public Object handleException(InvocationContext invocation) throws Exception {
-    Object  object  = invocation.proceed();
+  public Object handleException(InvocationContext invocation)
+      throws Exception {
+    Object  object  = null;
 
-    if (this.handler.isObjectNotFoundPattern()) {
+    try {
+      object  = invocation.proceed();
+    } catch (Throwable t) {
+      handler.handle(t);
+    }
+
+    if (handler.isObjectNotFoundPattern()) {
       handleObjectNotFoundPattern(invocation, object);
     }
 
     return object;
   }
 
-  @SuppressWarnings("rawtypes")
+  /**
+   * Behandel het object not found pattern.
+   * Genereer een ObjectNotFoundException als er geen DAO gevonden is.
+   * 
+   * @param invocation De InvocationContext
+   * @param object Het object dat niet gevonden werd.
+   */
   private void handleObjectNotFoundPattern(InvocationContext invocation,
                                            Object object)
       throws ObjectNotFoundException {
@@ -64,17 +77,23 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
       if (null == object) {
         e = buildObjectNotFoundException(invocation);
       } else if (((object instanceof Collection))
-          && (((Collection) object).size() == 0)) {
+          && (((Collection<?>) object).size() == 0)) {
         e = buildObjectNotFoundException(invocation);
       }
     }
 
     if (null != e) {
-      this.handler.log(e);
+      handler.log(e);
       throw e;
     }
   }
 
+  /**
+   * Maak de ObjectNotFoundException exception.
+   * 
+   * @param invocation De InvocationContext
+   * @return ObjectNotFoundException
+   */
   private ObjectNotFoundException
       buildObjectNotFoundException(InvocationContext invocation) {
     return new ObjectNotFoundException(this.handler.getLayer(),

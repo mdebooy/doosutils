@@ -21,14 +21,16 @@ import eu.debooy.doosutils.components.business.IProperty;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 
 /**
  * @author Marco de Booij
  */
-//@Named("properties")
-//@SessionScoped
-public class Property implements Serializable {
+@Named
+@SessionScoped
+public class Properties implements Serializable {
   private static final  long    serialVersionUID  = 1L;
 
   @EJB

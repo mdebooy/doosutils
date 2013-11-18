@@ -20,7 +20,7 @@ package eu.debooy.doosutils.components.bean;
 /**
  * @author Marco de Booij
  */
-public class ConfirmationBean extends JsfBean {
+public class ConfirmationBean extends DoosBean {
   private static final long serialVersionUID  = 1L;
 
   public  static final String BEAN_ALIAS  = "confirmation";

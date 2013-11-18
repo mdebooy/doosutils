@@ -21,6 +21,9 @@ import eu.debooy.doosutils.DoosUtils;
 import javax.ejb.Singleton;
 import javax.ejb.Stateful;
 import javax.ejb.Stateless;
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +56,28 @@ public class JNDI {
       jndi                = new StringBuilder();
       prefix              = PREFIX;
       separator           = SEPARATOR;
+    }
+
+    public <T> T locate(Class<T> clazz) {
+      return ServiceLocator.getInstance().lookup(clazz, asString());
+    }
+
+    public Object locate() {
+      return ServiceLocator.getInstance().lookup(asString());
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T getContextualInstance(final BeanManager manager,
+                                              final Class<T> type) {
+      T       result  = null;
+      Bean<T> bean    = (Bean<T>) manager.resolve(manager.getBeans(type));
+      if (bean != null) {
+        CreationalContext<T> context = manager.createCreationalContext(bean);
+        if (context != null) {
+          result  = (T) manager.getReference(bean, type, context);
+        }
+      }
+      return result;
     }
 
     public JNDINaam metAppNaam(String appNaam) {
@@ -146,14 +171,6 @@ public class JNDI {
       LOGGER.debug("JNDI: " + jndi.toString());
 
       return jndi.toString();
-    }
-
-    public <T> T locate(Class<T> clazz) {
-      return ServiceLocator.getInstance().lookup(clazz, asString());
-    }
-
-    public Object locate() {
-      return ServiceLocator.getInstance().lookup(asString());
     }
   }
 }

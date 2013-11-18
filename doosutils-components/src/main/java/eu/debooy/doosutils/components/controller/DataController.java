@@ -18,26 +18,61 @@ package eu.debooy.doosutils.components.controller;
 
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
-import eu.debooy.doosutils.components.bean.JsfBean;
+import eu.debooy.doosutils.components.bean.DoosBean;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * @author Marco de Booij
  */
-public class DataController extends JsfBean {
-  private static final  long  serialVersionUID  = 1L;
+public class DataController extends DoosBean {
+  private static final  long    serialVersionUID  = 1L;
+  private static final  Logger  LOGGER            =
+      LoggerFactory.getLogger(DataController.class.getName());
 
   private boolean     detailGefilterd = false;
   private boolean     gefilterd       = false;
+  private boolean     invoer          = true;
   private char        aktie           = PersistenceConstants.RETRIEVE;
   private char        detailAktie     = PersistenceConstants.RETRIEVE;
   private String      detailSubTitel  = "";
   private String      detailType;
+  private String[]    exportTypes     = new String[] {"ONBEKEND"};
   private String      subTitel        = "";
   private String      type;
+
+  /**
+   * Schrijf een nieuwe rij in de database.
+   */
+  public void create() {
+    LOGGER.error("create() niet toegestaan.");
+  }
+
+  /**
+   * Schrijf een nieuwe rij in de database.
+   */
+  public void createDetail() {
+    LOGGER.error("createDetail() niet toegestaan.");
+  }
+
+  /**
+   * Verwijder een rij uit de database.
+   */
+  public void delete() {
+    LOGGER.error("delete() niet toegestaan.");
+  }
+
+  /**
+   * Verwijder een rij uit de database.
+   */
+  public void deleteDetail() {
+    LOGGER.error("deleteDetail() niet toegestaan.");
+  }
 
   /**
    * @return de aktie
@@ -70,51 +105,27 @@ public class DataController extends JsfBean {
   /**
    * Zet de kleuren voor de JasperReport.
    * 
-   * @param applicatie
-   * @return
+   * @param String De naam van de applicatie
+   * @return Map<String, String>
    */
   protected Map<String, String> getLijstKleuren(String applicatie) {
-    Map<String, String> kleuren   = new HashMap<String, String>();
+    Map<String, String> kleuren = new HashMap<String, String>();
+    String[]            params  = new String[] {"columnheader.background",
+                                                "columnheader.foreground",
+                                                "footer.background",
+                                                "footer.foreground",
+                                                "row.background",
+                                                "row.foreground",
+                                                "row.conditional.background",
+                                                "row.conditional.foreground",
+                                                "titel.background",
+                                                "titel.foreground"};
 
-    String  kleur = getParameter(applicatie + ".lijst.columnheader.background");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("columnheader.background", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.columnheader.foreground");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("columnheader.foreground", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.footer.background");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("footer.background", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.footer.foreground");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("footer.foreground", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.row.background");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("row.background", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.row.foreground");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("row.foreground", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.row.conditional.background");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("row.conditional.background", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.row.conditional.foreground");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("row.conditional.foreground", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.titel.background");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("titel.background", kleur);
-    }
-    kleur = getParameter(applicatie + ".lijst.titel.foreground");
-    if (DoosUtils.isNotBlankOrNull(kleur)) {
-      kleuren.put("titel.foreground", kleur);
+    for (String param : params) {
+      String  kleur = getParameter(applicatie + ".lijst." + param);
+      if (DoosUtils.isNotBlankOrNull(kleur)) {
+        kleuren.put(param, kleur);
+      }
     }
 
     return kleuren;
@@ -153,6 +164,24 @@ public class DataController extends JsfBean {
   }
 
   /**
+   * Is het exportType toegestaan?
+   * 
+   * @param exportType
+   * @return
+   */
+  public boolean isGeldigExportType(String exportType) {
+    boolean geldig  = false;
+
+    for (int i = 0; i < exportTypes.length; i++) {
+      if (exportType.equalsIgnoreCase(exportTypes[i])) {
+        geldig  = true;
+      }
+    }
+
+    return geldig;
+  }
+
+  /**
    * In 'Gefilterde' mode?
    * 
    * @return gefilterd
@@ -168,6 +197,15 @@ public class DataController extends JsfBean {
    */
   public boolean isGefilterdDetail() {
     return detailGefilterd;
+  }
+
+  /**
+   * Is het toegestaan om data in te voeren?
+   * 
+   * @return invoer
+   */
+  public boolean isInvoer() {
+    return invoer;
   }
 
   /**
@@ -263,6 +301,46 @@ public class DataController extends JsfBean {
   }
 
   /**
+   * Reset de bean.
+   */
+  public void reset() {
+    super.reset();
+
+    setAktie(PersistenceConstants.RETRIEVE);
+    setDetailAktie(PersistenceConstants.RETRIEVE);
+    setDetailGefilterd(false);
+    setGefilterd(false);
+  }
+
+  /**
+   * Bewaar de rij in de database.
+   */
+  public void save() {
+    LOGGER.error("save() niet toegestaan.");
+  }
+
+  /**
+   * Bewaar de rij in de database.
+   */
+  public void saveDetail() {
+    LOGGER.error("saveDetail() niet toegestaan.");
+  }
+
+  /**
+   * Zoek in de database.
+   */
+  public void search() {
+    LOGGER.error("search() niet toegestaan.");
+  }
+
+  /**
+   * Zoek in de database.
+   */
+  public void searchDetail() {
+    LOGGER.error("searchDetail() niet toegestaan.");
+  }
+
+  /**
    * @param aktie
    */
   public void setAktie(char aktie) {
@@ -298,10 +376,28 @@ public class DataController extends JsfBean {
   }
 
   /**
+   * @param exportTypes
+   */
+  // TODO Test de exportTypes.
+  public void setExportTypes(String... exportTypes) {
+    this.exportTypes  = new String[exportTypes.length];
+    for (int i = 0; i < exportTypes.length; i++) {
+      this.exportTypes[i] = exportTypes[i];
+    }
+  }
+
+  /**
    * @param gefilterd
    */
   public void setGefilterd(boolean gefilterd) {
     this.gefilterd  = gefilterd;
+  }
+
+  /**
+   * @param invoer
+   */
+  public void setInvoer(boolean invoer) {
+    this.invoer = invoer;
   }
 
   /**
