@@ -47,7 +47,7 @@
     <site>
       <id>Documentatie</id>
       <name>DOOS Documentatie</name>
-      <url>file://intra.debooy.eu/var/www/site/DOOS-Utils</url>
+      <url>scp://intra.debooy.eu/var/www/site/DOOS-Utils</url>
     </site>
   </distributionManagement>
 
