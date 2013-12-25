@@ -260,25 +260,32 @@ public class CvsBestand {
   }
 
   /**
-   * @param lineSeparator the lineSeparator to set
+   * @param lineSeparator de lineSeparator to set
    */
   public void setLineSeparator(String lineSeparator) {
     this.lineSeparator = lineSeparator;
   }
 
+  /**
+   * Splits de lijn op in de verschillende velden.
+   *  
+   * @param lijn
+   * @return
+   */
   private String[] splits(String lijn) {
     String[]  hulp    = lijn.split(fieldSeparator);
     String[]  velden  = new String[hulp.length];
     int i = 0;
     int j = 0;
     while (i < hulp.length) {
-      String  veld  = hulp[i];
-      while (!testVeld(veld)) {
+      StringBuffer  veldbuf = new StringBuffer(hulp[i]);
+      while (!testVeld(veldbuf.toString())) {
         if (i < hulp.length) {
           i++;
         }
-        veld  += fieldSeparator + hulp[i];
+        veldbuf.append(fieldSeparator).append(hulp[i]);
       }
+      String  veld  = hulp[i];
       if (veld.startsWith(delimiter)
           && veld.endsWith(delimiter)) {
         veld  = veld.substring(delimiter.length(),

@@ -36,6 +36,7 @@ public class DoosJpaTest extends DoosTest {
 
   @Before
   public void setUp() {
+    super.setUp();
     em  = Persistence.createEntityManagerFactory("test")
                      .createEntityManager();
     et  = em.getTransaction();

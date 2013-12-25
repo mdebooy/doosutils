@@ -34,12 +34,15 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Marco de Booij
  */
-public class CDI {
+public final class CDI {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(CDI.class.getName());
 
+  private CDI() {};
+
   public static BeanManager getBeanManager() {
     BeanManager beanManager = null;
+
     try {
       final InitialContext initialContext = new InitialContext();
       beanManager =

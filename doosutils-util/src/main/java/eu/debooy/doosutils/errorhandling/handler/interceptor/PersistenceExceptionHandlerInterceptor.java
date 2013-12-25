@@ -45,8 +45,7 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
   }
 
   @AroundInvoke
-  public Object handleException(InvocationContext invocation)
-      throws Exception {
+  public Object handleException(InvocationContext invocation) {
     Object  object  = null;
 
     try {
