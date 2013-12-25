@@ -44,8 +44,13 @@ public class PersistenceExceptionHandlerInterceptor implements Serializable {
     this.handler  = handler;
   }
 
+  /**
+   * Verwijder de throws Exception niet omdat anders de applicatie niet
+   * ge-deployed kan worden.
+   */
   @AroundInvoke
-  public Object handleException(InvocationContext invocation) {
+  public Object handleException(InvocationContext invocation)
+      throws Exception {
     Object  object  = null;
 
     try {
