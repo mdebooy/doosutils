@@ -17,4 +17,8 @@
     <tag-name>footer</tag-name>
     <source>/tags/Footer.xhtml</source>
   </tag>
+  <tag>
+    <tag-name>spacer</tag-name>
+    <source>/tags/Spacer.xhtml</source>
+  </tag>
 </facelet-taglib>

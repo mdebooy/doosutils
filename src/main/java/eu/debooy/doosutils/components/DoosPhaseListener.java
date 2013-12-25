@@ -17,6 +17,7 @@
 package eu.debooy.doosutils.components;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
@@ -54,8 +55,9 @@ public class DoosPhaseListener implements PhaseListener {
       LOGGER.debug("Before: " + phase + " " + viewId);
       if (PhaseId.RESTORE_VIEW.equals(phase)) {
         reqParams = context.getExternalContext().getRequestParameterMap();
-        for (String key : reqParams.keySet()) {
-          LOGGER.debug("   " + key + ": " + ((String)reqParams.get(key)));
+        for (Entry<String, ?> param : reqParams.entrySet()) {
+          LOGGER.debug("   " + param.getKey() + ": "
+                       + ((String)param.getValue()));
         }
       }
     }
