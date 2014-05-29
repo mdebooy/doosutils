@@ -188,7 +188,7 @@ public class Gebruiker implements Serializable {
     if (null == userId) {
       userId  = getExternalContext().getRemoteUser();
       if (null == userId) {
-        userId  = "NN";
+        userId  = "";
       }
     }
 

@@ -21,7 +21,7 @@
     version="2.1">
    <description>Bevat componenten voor DOOS JSF implementaties.</description>
    <display-name>DOOS tag library.</display-name>
-   <tlib-version>1.0.4</tlib-version>
+   <tlib-version>1.3.0</tlib-version>
    <short-name>d</short-name>
    <uri>http://doos.debooy.eu/doos</uri>
 </taglib>

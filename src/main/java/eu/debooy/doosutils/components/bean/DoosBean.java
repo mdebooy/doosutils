@@ -19,6 +19,7 @@ package eu.debooy.doosutils.components.bean;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.components.I18nTeksten;
 import eu.debooy.doosutils.components.Properties;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.service.CDI;
 
 import java.io.IOException;
@@ -184,7 +185,15 @@ public class DoosBean implements Serializable {
    * @return String
    */
   public String getParameter(String parameter) {
-    return getProperty().value(parameter);
+    String  waarde;
+    try {
+      waarde  = getProperty().value(parameter);
+    } catch (ObjectNotFoundException e) {
+      addWarning("errors.notfound.parameter", parameter);
+      return "";
+    }
+
+    return waarde;
   }
 
   private Properties getProperty() {

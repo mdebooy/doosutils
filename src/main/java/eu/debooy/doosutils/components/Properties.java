@@ -19,6 +19,7 @@ package eu.debooy.doosutils.components;
 import eu.debooy.doosutils.components.business.IProperty;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -33,10 +34,66 @@ import javax.inject.Named;
 public class Properties implements Serializable {
   private static final  long    serialVersionUID  = 1L;
 
+  public static final   String  BEAN_NAME = "properties";
+
+  private List<Applicatieparameter> properties;
+  private Applicatieparameter       property;
+
   @EJB
   private IProperty propertyBean;
 
+  /**
+   * Stop de laatste aktie.
+   */
+  public void cancel() {
+    property  = null;
+  }
+
+  /**
+   * Geef de parameters/properties van een applicatie.
+   * 
+   * @param applicatie
+   * @return
+   */
+  public List<Applicatieparameter> properties(String applicatie) {
+    if (null == properties) {
+      properties  = propertyBean.getProperties(applicatie);
+    }
+
+    return properties;
+  }
+
+  /**
+   * Geef de geselecteerde parameter/property.
+   * 
+   * @return
+   */
+  public Applicatieparameter getProperty() {
+    return property;
+  }
+
+  /**
+   * Geef de waarde van een parameter/property.
+   * 
+   * @param property
+   * @return
+   */
   public String value(String property) {
     return propertyBean.getProperty(property);
+  }
+
+  /**
+   * Bewaar de Applicatieparameter in de database.
+   */
+  public void save() {
+    propertyBean.update(property);
+    property  = null;
+  }
+
+  /**
+   * @param property
+   */
+  public void wijzig(Applicatieparameter property) {
+    this.property = property;
   }
 }
