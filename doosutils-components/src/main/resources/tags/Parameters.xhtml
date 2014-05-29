@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:d="http://java.debooy.eu/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition>
+    <h2>#{i18nTeksten.tekst('titel.applicatie.parameters')}</h2>
+    <h:form id="formProperties" >
+      <t:dataTable id="tblParameterList"
+           rowClasses="odd,even"
+         columnClasses="table_ColumnCentered,table_Column"
+                 rows="#{rows}"
+                value="#{properties.properties(applicatie.applicatieNaam)}"
+                  var="property"
+                rowId="#{property.sleutel}">
+
+        <t:column width="18px" rendered="#{applicatie.administrator}">
+          <h:commandLink action="#{properties.wijzig(property)}" actionFor="formPropertys">
+            <img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" />
+          </h:commandLink>
+        </t:column>
+        <t:column width="400px">
+          <f:facet name="header">
+            #{i18nTeksten.tekst('label.parameter')}
+          </f:facet>
+          #{i18nTeksten.tekst(property.parameter)}
+        </t:column>
+        <t:column width="500px">
+          <f:facet name="header">
+            #{i18nTeksten.tekst('label.waarde')}
+          </f:facet>
+          <t:outputText value="#{property.waarde}" />
+        </t:column>
+
+        <f:facet name="footer">
+          <t:dataScroller id="scrollParameterList"
+                         for="tblParameterList"
+                    fastStep="5"
+                pageCountVar="pageCount"
+                pageIndexVar="pageIndex"
+                  styleClass="scroller"
+                   paginator="true"
+           paginatorMaxPages="5"
+         paginatorTableClass="paginator"
+  paginatorActiveColumnStyle="font-weight:bold;"
+    renderFacetsIfSinglePage="false"
+disableFacetLinksIfFirstPage="true"
+ disableFacetLinksIfLastPage="true">
+            <f:facet name="first" >
+              <img src="/common/images/16x16/actions/go-first.png" />
+            </f:facet>
+            <f:facet name="last">
+              <img src="/common/images/16x16/actions/go-last.png" />
+            </f:facet>
+            <f:facet name="previous">
+              <img src="/common/images/16x16/actions/go-previous.png" />
+            </f:facet>
+            <f:facet name="next">
+              <img src="/common/images/16x16/actions/go-next.png" />
+            </f:facet>
+          </t:dataScroller>
+        </f:facet>
+      </t:dataTable>
+    </h:form>
+
+    <h:form id="formProperty" rendered="#{properties.property ne null}" >
+      <hr />
+      <h2>#{i18nTeksten.tekst('titel.applicatie.parameter.wijzig')}</h2>
+      <h:panelGrid columns="2" cellpadding="5">
+        <h:outputText value="#{i18nTeksten.tekst('label.parameter')}" />
+        #{i18nTeksten.tekst(properties.property.parameter)}
+        <h:outputText value="#{i18nTeksten.tekst('label.waarde')}" valign="top" />
+        <t:inputText id="waarde" value="#{properties.property.waarde}" maxlength="255" size="100" />
+      </h:panelGrid>
+      <t:commandButton id="modifyParameter" value="#{i18nTeksten.tekst('button.save')}" actionFor="formProperty" action="#{properties.save}" />
+      <t:commandButton id="cancel" value="#{i18nTeksten.tekst('button.cancel')}" actionFor="formProperty" action="#{properties.cancel}" />
+    </h:form>
+
+    <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
+  </ui:composition>
+</html>
+  

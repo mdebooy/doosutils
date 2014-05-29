@@ -16,7 +16,9 @@
  */
 package eu.debooy.doosutils.components.business;
 
-import java.util.Map;
+import eu.debooy.doosutils.components.Applicatieparameter;
+
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -27,12 +29,12 @@ import javax.ejb.Remote;
 // TODO Toegang beperken via rollen.
 @Remote
 public interface IProperty {
-  void                clear();
-  void                delete(String property);
-  Map<String, String> getProperties(String applicatie);
+  void                      clear();
+  void                      delete(String property);
+  List<Applicatieparameter> getProperties(String applicatie);
   // Voor iedereen
-  String              getProperty(String property);
-  void                update(String applicatie, Map<String, String> properties);
-  void                update(String property, String waarde);
-  int                 size();
+  String                    getProperty(String property);
+  void                      update(Applicatieparameter property);
+  void                      update(String property, String waarde);
+  int                       size();
 }

@@ -18,6 +18,10 @@
     <source>/tags/Footer.xhtml</source>
   </tag>
   <tag>
+    <tag-name>parameters</tag-name>
+    <source>/tags/Parameters.xhtml</source>
+  </tag>
+  <tag>
     <tag-name>spacer</tag-name>
     <source>/tags/Spacer.xhtml</source>
   </tag>
