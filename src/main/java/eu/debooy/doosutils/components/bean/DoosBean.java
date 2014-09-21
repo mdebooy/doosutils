@@ -42,14 +42,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Marco de Booij
+ * 
+ * Methodes mogen niet final zijn omdat CDI dit niet toelaat.
  */
 public class DoosBean implements Serializable {
-  private static final  long      serialVersionUID      = 1L;
+  private static final long serialVersionUID = 1L;
 
-  private static final  Logger    LOGGER                =
+  private static  Logger    LOGGER                =
       LoggerFactory.getLogger(DoosBean.class.getName());
-  public  static final  String    BEAN_NAME             = "doosBean";
-  private static final  String    SESSION_DIRTYPAGE_KEY = "page.dirty";
+  public  static  String    BEAN_NAME             = "doosBean";
+  private static  String    SESSION_DIRTYPAGE_KEY = "page.dirty";
 
   private Gebruiker   gebruiker = null;
   private I18nTeksten i18nTekst = null;
@@ -93,7 +95,7 @@ public class DoosBean implements Serializable {
    * 
    * @param summary
    */
-  protected final void addError(String code, Object... params) {
+  protected void addError(String code, Object... params) {
     addMessage(FacesMessage.SEVERITY_ERROR, code, params);
   }
 
@@ -102,7 +104,7 @@ public class DoosBean implements Serializable {
    * 
    * @param summary
    */
-  protected final void addFatal(String code, Object... params) {
+  protected void addFatal(String code, Object... params) {
     addMessage(FacesMessage.SEVERITY_FATAL, code, params);
   }
 
@@ -111,7 +113,7 @@ public class DoosBean implements Serializable {
    * 
    * @param summary
    */
-  protected final void addInfo(String code, Object... params) {
+  protected void addInfo(String code, Object... params) {
     addMessage(FacesMessage.SEVERITY_INFO, code, params);
   }
 
@@ -122,7 +124,7 @@ public class DoosBean implements Serializable {
    * @param code
    * @param params
    */
-  protected final void addMessage(Severity severity, String code,
+  protected void addMessage(Severity severity, String code,
                                   Object... params) {
     String        detail  = getTekst(code, params);
     String        summary = getTekst(code, params);
@@ -136,7 +138,7 @@ public class DoosBean implements Serializable {
    * 
    * @param summary
    */
-  protected final void addWarning(String code, Object... params) {
+  protected void addWarning(String code, Object... params) {
     addMessage(FacesMessage.SEVERITY_WARN, code, params);
   }
 
@@ -145,7 +147,7 @@ public class DoosBean implements Serializable {
    * 
    * @param naam
    */
-  protected final void destroyBean(String naam) {
+  protected void destroyBean(String naam) {
     DoosBean  bean  = getBean(naam);
     bean.reset();
   }
@@ -155,7 +157,7 @@ public class DoosBean implements Serializable {
    * 
    * @param exception
    */
-  protected final void generateExceptionMessage(Exception exception) {
+  protected void generateExceptionMessage(Exception exception) {
     addError("generic.Exception", new Object[] {exception.getMessage(),
                                                 exception });
   }
@@ -167,7 +169,7 @@ public class DoosBean implements Serializable {
    * @param params
    * @return
    */
-  public final String getMessage(String message, Object... params) {
+  public String getMessage(String message, Object... params) {
     if (null == params) {
       return message;
     }
@@ -212,7 +214,7 @@ public class DoosBean implements Serializable {
    * @param params
    * @return
    */
-  public final String getTekst(String code, Object... params) {
+  public String getTekst(String code, Object... params) {
     String  tekst = getI18nTekst().tekst(code);
 
     if (null == params) {
@@ -225,7 +227,7 @@ public class DoosBean implements Serializable {
     return formatter.format(params);
   }
 
-  protected final DoosBean getApplicationBean(String name) {
+  protected DoosBean getApplicationBean(String name) {
     return (DoosBean) getExternalContext().getApplicationMap().get(name);
   }
 
@@ -235,7 +237,7 @@ public class DoosBean implements Serializable {
    * @param clazz een DoosBean.
    * @return DoosBean
    */
-  protected final DoosBean getBean(Class<?> clazz) {
+  protected DoosBean getBean(Class<?> clazz) {
     return (DoosBean) CDI.getBean(clazz);
   }
 
@@ -245,7 +247,7 @@ public class DoosBean implements Serializable {
    * @param naam een naam van een DoosBean.
    * @return DoosBean
    */
-  protected final DoosBean getBean(String naam) {
+  protected DoosBean getBean(String naam) {
     return (DoosBean) CDI.getBean(naam);
   }
 
@@ -254,7 +256,7 @@ public class DoosBean implements Serializable {
    * 
    * @return ExternalContext
    */
-  protected final ExternalContext getExternalContext() {
+  protected ExternalContext getExternalContext() {
     FacesContext  facesContext  = FacesContext.getCurrentInstance();
 
     return facesContext.getExternalContext();
@@ -278,7 +280,7 @@ public class DoosBean implements Serializable {
    * 
    * @return String
    */
-  public final String getGebruikerNaam() {
+  public String getGebruikerNaam() {
     String  resultaat = getGebruiker().getUserName();
     if (DoosUtils.isNotBlankOrNull(resultaat)) {
       return resultaat;
@@ -300,7 +302,7 @@ public class DoosBean implements Serializable {
     return i18nTekst;
   }
 
-  public final void invokeAction(String action) {
+  public void invokeAction(String action) {
     if (null != action) {
       StringTokenizer tk          = new StringTokenizer(action, ".", false);
       String          beannaam    = tk.nextToken();
@@ -328,7 +330,7 @@ public class DoosBean implements Serializable {
    * 
    * @return boolean
    */
-  public final boolean isPageDirty() {
+  public boolean isPageDirty() {
     Object  value = getExternalContext().getSessionMap()
                                         .get(SESSION_DIRTYPAGE_KEY);
     if (null == value) {
@@ -338,7 +340,7 @@ public class DoosBean implements Serializable {
     return ((Boolean) value).booleanValue();
   }
 
-  protected final void processActionWithCaution(String proceedAction) {
+  protected void processActionWithCaution(String proceedAction) {
     if (isPageDirty()) {
       ConfirmationBean  confirm =
         (ConfirmationBean) getBean(ConfirmationBean.class);
@@ -354,11 +356,11 @@ public class DoosBean implements Serializable {
     }
   }
 
-  protected final void redirect() {
+  protected void redirect() {
     redirect("/index.jsf");
   }
 
-  protected final void redirect(String path) {
+  protected void redirect(String path) {
     try {
       getExternalContext().redirect(getExternalContext().getRequestContextPath()
                                     + path);
@@ -379,7 +381,7 @@ public class DoosBean implements Serializable {
    * 
    * @param Boolean Dirty?
    */
-  protected final void setPageDirty(Boolean dirty) {
+  protected void setPageDirty(Boolean dirty) {
     getExternalContext().getSessionMap().put(SESSION_DIRTYPAGE_KEY, dirty);
   }
 }
