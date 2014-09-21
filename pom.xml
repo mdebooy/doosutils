@@ -132,7 +132,7 @@
   </dependencyManagement>
 
   <properties>
-    <myfaces.version>2.1.7</myfaces.version>
+    <myfaces.version>2.1.15</myfaces.version>
     <openjpa.version>2.4.0-nonfinal-1598334</openjpa.version>
   </properties>
 </project>

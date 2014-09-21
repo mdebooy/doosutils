@@ -17,7 +17,7 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.apache.openjpa</groupId>
+      <groupId>org.apache.openejb.patch</groupId>
       <artifactId>openjpa</artifactId>
       <scope>compile</scope>
     </dependency>
