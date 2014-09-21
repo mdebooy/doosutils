@@ -278,7 +278,7 @@ public class CvsBestand {
     int i = 0;
     int j = 0;
     while (i < hulp.length) {
-      StringBuffer  veldbuf = new StringBuffer(hulp[i]);
+      StringBuilder veldbuf = new StringBuilder(hulp[i]);
       while (!testVeld(veldbuf.toString())) {
         if (i < hulp.length) {
           i++;

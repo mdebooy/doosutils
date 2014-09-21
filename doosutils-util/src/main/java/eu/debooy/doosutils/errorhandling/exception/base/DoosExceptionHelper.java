@@ -52,7 +52,7 @@ public final class DoosExceptionHelper {
       return "<NULL>";
     }
 
-    StringBuffer  params  = new StringBuffer("");
+    StringBuilder params  = new StringBuilder("");
     for (Object object : objects) {
       if (params.length() > 0) {
         params.append(", ");

@@ -36,6 +36,15 @@ public class DuplicateObjectException extends DoosRuntimeException {
       return failedObject;
   }
 
+  public DuplicateObjectException(DoosLayer layer, String message) {
+    super(DoosError.DUPLICATE_OBJECT, layer, message);
+  }
+
+  public DuplicateObjectException(DoosLayer layer, String message,
+                                      Throwable cause) {
+    super(DoosError.DUPLICATE_OBJECT, layer, message, cause);
+  }
+
   public DuplicateObjectException(DoosLayer doosLayer, Object failedObject,
                                   String message) {
     super(DoosError.DUPLICATE_OBJECT, doosLayer, message);

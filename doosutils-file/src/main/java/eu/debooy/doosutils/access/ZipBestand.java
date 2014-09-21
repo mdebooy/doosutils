@@ -69,7 +69,9 @@ public final class ZipBestand {
         ZipEntry  entry   = entries.nextElement();
         File      bestand = new File(doel + File.separator + entry.getName());
         if (entry.isDirectory()) {
-          bestand.mkdir();
+          if (!bestand.mkdir()) {
+            throw new BestandException("mkdir " + bestand + " failed.");
+          }
         } else {
           InputStream is  = bron.getInputStream(entry);
           fos = new FileOutputStream(bestand);

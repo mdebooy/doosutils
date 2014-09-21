@@ -16,6 +16,7 @@
  */
 package eu.debooy.doosutils.errorhandling.handler;
 
+import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.MultipleObjectFoundException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.SerializableException;
@@ -29,6 +30,7 @@ import eu.debooy.doosutils.errorhandling.handler.base.ExceptionHandlerBase;
 
 import java.sql.SQLException;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceException;
@@ -74,6 +76,12 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
       DoosRuntimeException  de  =
           new MultipleObjectFoundException(DoosLayer.PERSISTENCE,
                                            e.getMessage(), e);
+      log(de);
+      throw de;
+    } catch (EntityExistsException eee){
+      DoosRuntimeException  de  =
+          new DuplicateObjectException(DoosLayer.PERSISTENCE,
+                                       eee.getMessage(), eee);
       log(de);
       throw de;
     } catch (PersistenceException pe) {
@@ -131,7 +139,7 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
   public static Throwable findRootCause(Throwable t, int nbTimes) {
     Throwable targetException = t;
     if (null != targetException) {
-      try {
+//      try {
         // TODO Vind de PropertyUtils
 //        String exceptionProperty = "targetException";
 //        if (PropertyUtils.isReadable(t, exceptionProperty)) {
@@ -147,9 +155,9 @@ public class PersistenceEJBExceptionHandler extends ExceptionHandlerBase {
 //        if (null != targetException) {
 //          t = targetException;
 //        }
-      } catch (Exception ex) {
-        ex.printStackTrace();
-      }
+//      } catch (Exception ex) {
+//        ex.printStackTrace();
+//      }
 
       if ((null != targetException.getCause()) && (nbTimes != 0)) {
         targetException = t.getCause();
