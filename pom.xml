@@ -43,14 +43,6 @@
     </developer>
   </developers>
 
-  <distributionManagement>
-    <site>
-      <id>Documentatie</id>
-      <name>DOOS Documentatie</name>
-      <url>scp://intra.debooy.eu/var/www/site/DOOS-Utils</url>
-    </site>
-  </distributionManagement>
-
   <dependencies>
     <dependency>
       <groupId>commons-logging</groupId>
