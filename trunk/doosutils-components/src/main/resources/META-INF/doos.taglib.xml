@@ -1,0 +1,28 @@
+<!DOCTYPE facelet-taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD Facelet Taglib 1.0//EN"
+  "http://java.sun.com/dtd/facelet-taglib_1_0.dtd">
+
+<facelet-taglib>
+  <namespace>http://java.debooy.eu/jsf/facelets</namespace>
+
+  <tag>
+    <tag-name>actionbar</tag-name>
+    <source>/tags/Actionbar.xhtml</source>
+  </tag>
+  <tag>
+    <tag-name>buttonbar</tag-name>
+    <source>/tags/Buttonbar.xhtml</source>
+  </tag>
+  <tag>
+    <tag-name>footer</tag-name>
+    <source>/tags/Footer.xhtml</source>
+  </tag>
+  <tag>
+    <tag-name>parameters</tag-name>
+    <source>/tags/Parameters.xhtml</source>
+  </tag>
+  <tag>
+    <tag-name>spacer</tag-name>
+    <source>/tags/Spacer.xhtml</source>
+  </tag>
+</facelet-taglib>

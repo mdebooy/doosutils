@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC
+  "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition>
+    <t:commandButton id="create" value="#{i18nTeksten.tekst('button.create')}" actionFor="#{actionFor}" action="#{bean.create}" rendered="#{bean.nieuw and !detail}" />
+    <t:commandButton id="delete" value="#{i18nTeksten.tekst('button.delete')}" actionFor="#{actionFor}" action="#{bean.delete}" rendered="#{bean.verwijder and !detail}" />
+    <t:commandButton id="modify" value="#{i18nTeksten.tekst('button.save')}"   actionFor="#{actionFor}" action="#{bean.save}"   rendered="#{bean.wijzig and !detail}" />
+    <t:commandButton id="search" value="#{i18nTeksten.tekst('button.search')}" actionFor="#{actionFor}" action="#{bean.search}" rendered="#{bean.zoek and !detail}" />
+    <t:commandButton id="cancel" value="#{i18nTeksten.tekst('button.cancel')}" actionFor="#{actionFor}" action="#{bean.cancel}" rendered="#{!detail}" />
+    <t:commandButton id="createDetail" value="#{i18nTeksten.tekst('button.create')}" actionFor="#{actionFor}" action="#{bean.createDetail}" rendered="#{bean.nieuwDetail and detail}" />
+    <t:commandButton id="deleteDetail" value="#{i18nTeksten.tekst('button.delete')}" actionFor="#{actionFor}" action="#{bean.deleteDetail}" rendered="#{bean.verwijderDetail and detail}" />
+    <t:commandButton id="modifyDetail" value="#{i18nTeksten.tekst('button.save')}"   actionFor="#{actionFor}" action="#{bean.saveDetail}"   rendered="#{bean.wijzigDetail and detail}" />
+    <t:commandButton id="searchDetail" value="#{i18nTeksten.tekst('button.search')}" actionFor="#{actionFor}" action="#{bean.searchDetail}" rendered="#{bean.zoekDetail and detail}" />
+    <t:commandButton id="cancelDetail" value="#{i18nTeksten.tekst('button.cancel')}" actionFor="#{actionFor}" action="#{bean.cancelDetail}" rendered="#{detail}" />
+  </ui:composition>
+</html>
