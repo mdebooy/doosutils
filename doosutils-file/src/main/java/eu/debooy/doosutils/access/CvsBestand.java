@@ -285,7 +285,7 @@ public class CvsBestand {
         }
         veldbuf.append(fieldSeparator).append(hulp[i]);
       }
-      String  veld  = hulp[i];
+      String  veld  = veldbuf.toString();
       if (veld.startsWith(delimiter)
           && veld.endsWith(delimiter)) {
         veld  = veld.substring(delimiter.length(),
