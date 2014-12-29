@@ -16,11 +16,12 @@
  */
 package eu.debooy.doosutils.components.bean;
 
+import eu.debooy.jaas.UserPrincipal;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
-import java.security.Principal;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.jar.Attributes;
@@ -67,6 +68,7 @@ public class Gebruiker implements Serializable {
   public Gebruiker() {
     if (LOGGER.isTraceEnabled()) {
       LOGGER.trace("Gebruiker gemaakt.");
+
     }
   }
 
@@ -200,8 +202,9 @@ public class Gebruiker implements Serializable {
    */
   public String getUserName() {
     if (null == userName) {
-      Principal principal = getExternalContext().getUserPrincipal();
-      userName  = principal.getName();
+      UserPrincipal principal =
+          (UserPrincipal) getExternalContext().getUserPrincipal();
+      userName  = principal.getVolledigeNaam();
     }
     if (null == userName) {
       userName  = getUserId();
