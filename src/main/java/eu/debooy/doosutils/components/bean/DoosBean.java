@@ -17,7 +17,9 @@
 package eu.debooy.doosutils.components.bean;
 
 import eu.debooy.doosutils.DoosUtils;
+import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.I18nTeksten;
+import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.components.Properties;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.service.CDI;
@@ -28,6 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.faces.application.FacesMessage;
@@ -48,14 +51,17 @@ import org.slf4j.LoggerFactory;
 public class DoosBean implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private static  Logger    LOGGER                =
+  private static  Logger    LOGGER    =
       LoggerFactory.getLogger(DoosBean.class.getName());
-  public  static  String    BEAN_NAME             = "doosBean";
-  private static  String    SESSION_DIRTYPAGE_KEY = "page.dirty";
+  public  static  String    BEAN_NAME = "doosBean";
 
-  private Gebruiker   gebruiker = null;
-  private I18nTeksten i18nTekst = null;
-  private Properties  property  = null;
+  private boolean     adminRole       = false;
+  private char        aktie           = PersistenceConstants.RETRIEVE;
+  private String      applicatieNaam  = "DoosBean";
+  private Gebruiker   gebruiker       = null;
+  private I18nTeksten i18nTekst       = null;
+  private Properties  property        = null;
+  private boolean     userRole        = false;
 
   public DoosBean() {
     if (LOGGER.isTraceEnabled()) {
@@ -134,22 +140,49 @@ public class DoosBean implements Serializable {
   }
 
   /**
+   * Voeg een JSF melding toe.
+   * 
+   * @param severity
+   * @param code
+   * @param params
+   */
+  protected void addMessage(List<Message> messages) {
+    for (Message message : messages) {
+      Object[]  params  = message.getParams();
+      // Parameters die beginnen met "_I18N." moeten 'vertaald' worden.
+      for (int i = 0; i < params.length; i++) {
+        if (params[i] instanceof String) {
+          String  param = (String) params[i];
+          if (param.startsWith("_I18N.")) {
+            params[i] = getTekst(param.substring(6));
+          }
+        }
+      }
+      String    code    = message.getMessage();
+      switch (message.getSeverity()) {
+      case Message.ERROR:
+        addError(code, params);
+        break;
+      case Message.FATAL:
+        addFatal(code, params);
+        break;
+      case Message.INFO:
+        addInfo(code, params);
+        break;
+      default:
+        addWarning(code, params);
+        break;
+      }
+    }
+  }
+
+  /**
    * Voeg een JSF WARN melding toe.
    * 
    * @param summary
    */
   protected void addWarning(String code, Object... params) {
     addMessage(FacesMessage.SEVERITY_WARN, code, params);
-  }
-
-  /**
-   * Zorg ervoor dat de DoosBean weer in na-init status is.
-   * 
-   * @param naam
-   */
-  protected void destroyBean(String naam) {
-    DoosBean  bean  = getBean(naam);
-    bean.reset();
   }
 
   /**
@@ -160,6 +193,21 @@ public class DoosBean implements Serializable {
   protected void generateExceptionMessage(Exception exception) {
     addError("generic.Exception", new Object[] {exception.getMessage(),
                                                 exception });
+  }
+
+  /**
+   * @return de aktie
+   */
+  public char getAktie() {
+    return aktie;
+  }
+
+  /**
+   * Geef de naam van de applicatie.
+   * @return
+   */
+  public String getApplicatieNaam() {
+    return applicatieNaam;
   }
 
   /**
@@ -302,6 +350,52 @@ public class DoosBean implements Serializable {
     return i18nTekst;
   }
 
+  /**
+   * In 'Bekijk' mode?
+   * 
+   * @return boolean
+   */
+  public boolean isBekijk() {
+    return (aktie == PersistenceConstants.RETRIEVE);
+  }
+
+  /**
+   * In 'Nieuw' mode?
+   * 
+   * @return boolean
+   */
+  public boolean isNieuw() {
+    return (aktie == PersistenceConstants.CREATE);
+  }
+
+  /**
+   * In read-only mode?
+   * 
+   * @return boolean
+   */
+  public boolean isReadonly() {
+    return (aktie == PersistenceConstants.DELETE)
+        || (aktie == PersistenceConstants.RETRIEVE);
+  }
+
+  /**
+   * In 'Verwijder' mode?
+   * 
+   * @return boolean
+   */
+  public boolean isVerwijder() {
+    return (aktie == PersistenceConstants.DELETE);
+  }
+
+  /**
+   * In 'Wijzig' mode?
+   * 
+   * @return boolean
+   */
+  public boolean isWijzig() {
+    return (aktie == PersistenceConstants.UPDATE);
+  }
+
   public void invokeAction(String action) {
     if (null != action) {
       StringTokenizer tk          = new StringTokenizer(action, ".", false);
@@ -326,40 +420,43 @@ public class DoosBean implements Serializable {
   }
 
   /**
-   * Zijn er wijzigingen op de pagina?
+   * Is de gebruiker een administrator?
    * 
    * @return boolean
    */
-  public boolean isPageDirty() {
-    Object  value = getExternalContext().getSessionMap()
-                                        .get(SESSION_DIRTYPAGE_KEY);
-    if (null == value) {
-      return false;
-    }
-
-    return ((Boolean) value).booleanValue();
+  public boolean isAdministrator() {
+    return adminRole;
   }
 
-  protected void processActionWithCaution(String proceedAction) {
-    if (isPageDirty()) {
-      ConfirmationBean  confirm =
-        (ConfirmationBean) getBean(ConfirmationBean.class);
-      confirm.setConfirmReturnAction(proceedAction);
-      confirm.setHeader("Warning");
-      confirm.setBody("Er zijn niet opgeslagen veranderingen...<br/>Doorgaan "
-                      + "betekent dat je de wijzigingen zal verliezen. "
-                      + "Weet je zeker dat je dit wilt?");
-
-      confirm.showPopup();
-    } else {
-      invokeAction(proceedAction);
-    }
+  /**
+   * Mag de user de applicatie gebruiken?
+   * 
+   * @return boolean
+   */
+  public boolean isGerechtigd() {
+    return adminRole || userRole;
   }
 
+  /**
+   * Is het een gewone gebruiker?
+   * 
+   * @return boolean
+   */
+  public boolean isUser() {
+    return userRole;
+  }
+
+  /**
+   * Redirect naar de applicatie 'Home' pagina.
+   */
   protected void redirect() {
     redirect("/index.jsf");
   }
 
+  /**
+   * Redirect naar een pagina.
+   * @param path
+   */
   protected void redirect(String path) {
     try {
       getExternalContext().redirect(getExternalContext().getRequestContextPath()
@@ -370,18 +467,30 @@ public class DoosBean implements Serializable {
   }
 
   /**
-   * Reset de bean.
+   * @param adminRole de waarde van adminRole
    */
-  public void reset() {
-    setPageDirty(false);
+  public void setAdminRole(boolean adminRole) {
+    this.adminRole = adminRole;
   }
 
   /**
-   * Geeft aan of er wijzigingen op de pagina zijn.
-   * 
-   * @param Boolean Dirty?
+   * @param aktie
    */
-  protected void setPageDirty(Boolean dirty) {
-    getExternalContext().getSessionMap().put(SESSION_DIRTYPAGE_KEY, dirty);
+  public void setAktie(char aktie) {
+    this.aktie  = aktie;
+  }
+
+  /**
+   * @param adminRole de waarde van adminRole
+   */
+  public void setApplicatieNaam(String applicatieNaam) {
+    this.applicatieNaam = applicatieNaam;
+  }
+
+  /**
+   * @param userRole de waarde van userRole
+   */
+  public void setUserRole(boolean userRole) {
+    this.userRole = userRole;
   }
 }
