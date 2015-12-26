@@ -17,9 +17,7 @@
 package eu.debooy.doosutils.components;
 
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.components.bean.Gebruiker;
 import eu.debooy.doosutils.components.business.II18nTekst;
-import eu.debooy.doosutils.service.CDI;
 
 import java.io.Serializable;
 
@@ -44,9 +42,9 @@ public class I18nTeksten implements Serializable {
       return "<null>";
     }
 
-    Gebruiker gebruiker = (Gebruiker) CDI.getBean("gebruiker");
+//    Gebruiker gebruiker = (Gebruiker) CDI.getBean("gebruiker");
 
-    return i18nTekstBean.getI18nTekst(code,
-                                      gebruiker.getLocale().getLanguage());
+    return i18nTekstBean.getI18nTekst(code, "nl");
+//                                      gebruiker.getLocale().getLanguage());
   }
 }
