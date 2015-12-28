@@ -29,8 +29,10 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.faces.application.FacesMessage;
@@ -55,13 +57,16 @@ public class DoosBean implements Serializable {
       LoggerFactory.getLogger(DoosBean.class.getName());
   public  static  String    BEAN_NAME = "doosBean";
 
-  private boolean     adminRole       = false;
-  private char        aktie           = PersistenceConstants.RETRIEVE;
-  private String      applicatieNaam  = "DoosBean";
-  private Gebruiker   gebruiker       = null;
-  private I18nTeksten i18nTekst       = null;
-  private Properties  property        = null;
-  private boolean     userRole        = false;
+  private boolean             adminRole       = false;
+  private char                aktie           = PersistenceConstants.RETRIEVE;
+  private String              applicatieNaam  = "DoosBean";
+  private Gebruiker           gebruiker       = null;
+  private I18nTeksten         i18nTekst       = null;
+  private Map<String, String> kleuren         = null;
+  private Properties          property        = null;
+  private String              type            = null;
+  private String              subTitel        = null;
+  private boolean             userRole        = false;
 
   public DoosBean() {
     if (LOGGER.isTraceEnabled()) {
@@ -209,6 +214,36 @@ public class DoosBean implements Serializable {
   public String getApplicatieNaam() {
     return applicatieNaam;
   }
+  /**
+   * Zet de kleuren voor de JasperReport.
+   * 
+   * @return Map<String, String>
+   */
+  protected Map<String, String> getLijstKleuren() {
+    if (null == kleuren) {
+      kleuren           = new HashMap<String, String>();
+      String[]  params  = new String[] {"columnheader.background",
+                                        "columnheader.foreground",
+                                        "footer.background",
+                                        "footer.foreground",
+                                        "row.background",
+                                        "row.foreground",
+                                        "row.conditional.background",
+                                        "row.conditional.foreground",
+                                        "titel.background",
+                                        "titel.foreground"};
+
+      for (String param : params) {
+        String  kleur = getParameter(getApplicatieNaam().toLowerCase()
+                                     + ".lijst." + param);
+        if (DoosUtils.isNotBlankOrNull(kleur)) {
+          kleuren.put(param, kleur);
+        }
+      }
+    }
+
+    return kleuren;
+  }
 
   /**
    * Geef een geformatteerde message.
@@ -255,6 +290,15 @@ public class DoosBean implements Serializable {
   }
 
   /**
+   * Geef de sub-titel.
+   * 
+   * @return
+   */
+  public String getSubTitel() {
+    return subTitel;
+  }
+
+  /**
    * Krijg de tekst die bij de code behoort. De eventuele params worden erin
    * gezet.
    * 
@@ -273,6 +317,13 @@ public class DoosBean implements Serializable {
                                                 getGebruiker().getLocale());
 
     return formatter.format(params);
+  }
+
+  /**
+   * @return de type
+   */
+  public String getType() {
+    return type;
   }
 
   protected DoosBean getApplicationBean(String name) {
@@ -481,10 +532,21 @@ public class DoosBean implements Serializable {
   }
 
   /**
-   * @param adminRole de waarde van adminRole
+   * @param String de naam van de applicatie.
    */
   public void setApplicatieNaam(String applicatieNaam) {
     this.applicatieNaam = applicatieNaam;
+  }
+
+  public void setSubTitel(String subTitel) {
+    this.subTitel = subTitel;
+  }
+
+  /**
+   * @param type de waarde van type
+   */
+  public void setType(String type) {
+    this.type = type;
   }
 
   /**
