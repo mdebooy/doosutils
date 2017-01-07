@@ -84,8 +84,7 @@ public final class CDI {
       return null;
     }
 
-    Bean<T>               bean              =
-        (Bean<T>) beanManager.resolve(beanManager.getBeans(naam));
+    Bean<T> bean  = (Bean<T>) beanManager.resolve(beanManager.getBeans(naam));
     CreationalContext<T>  creationalContext =
         beanManager.createCreationalContext(bean);
     

@@ -6,20 +6,28 @@
   <namespace>http://java.debooy.eu/jsf/facelets</namespace>
 
   <tag>
-    <tag-name>actionbar</tag-name>
-    <source>/tags/Actionbar.xhtml</source>
+    <tag-name>cancel</tag-name>
+    <source>/tags/CancelOrBack.xhtml</source>
   </tag>
   <tag>
-    <tag-name>buttonbar</tag-name>
-    <source>/tags/Buttonbar.xhtml</source>
+    <tag-name>confirmatie</tag-name>
+    <source>/tags/Confirmatie.xhtml</source>
   </tag>
   <tag>
     <tag-name>footer</tag-name>
     <source>/tags/Footer.xhtml</source>
   </tag>
   <tag>
-    <tag-name>parameters</tag-name>
-    <source>/tags/Parameters.xhtml</source>
+    <tag-name>listbox</tag-name>
+    <source>/tags/Listbox.xhtml</source>
+  </tag>
+  <tag>
+    <tag-name>menu</tag-name>
+    <source>/tags/Menu.xhtml</source>
+  </tag>
+  <tag>
+    <tag-name>messages</tag-name>
+    <source>/tags/Messages.xhtml</source>
   </tag>
   <tag>
     <tag-name>spacer</tag-name>
