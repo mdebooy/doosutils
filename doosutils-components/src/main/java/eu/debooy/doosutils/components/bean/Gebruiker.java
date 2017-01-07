@@ -37,16 +37,20 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * Deze class wordt gebruikt om de versie informatie van een applicatie te laten
+ * zien. Tevens bevat het de locale, de user-id en de volledige naam van de
+ * gebruiker zodat niet steeds deze informatie uit de request informatie gehaald
+ * moet worden.
+ * 
  * @author Marco de Booij
  */
 @Named
 @SessionScoped
-// TODO Vervang de JSF Context variabelen.
 public class Gebruiker implements Serializable {
   private static final  long      serialVersionUID      = 1L;
 
   private static final  Logger    LOGGER                =
-      LoggerFactory.getLogger(Gebruiker.class.getName());
+      LoggerFactory.getLogger(Gebruiker.class);
   private static final  String    DATE_UNKNOWN      = "UNKNOWN";
   private static final  String    MANIFEST          = "/META-INF/MANIFEST.MF";
   private static final  String    VERSION_UNSTABLE  = "UNSTABLE";
@@ -66,10 +70,7 @@ public class Gebruiker implements Serializable {
   }
 
   public Gebruiker() {
-    if (LOGGER.isTraceEnabled()) {
-      LOGGER.trace("Gebruiker gemaakt.");
-
-    }
+    LOGGER.trace("Gebruiker gemaakt.");
   }
 
   /**
@@ -100,7 +101,7 @@ public class Gebruiker implements Serializable {
 
       }
       try {
-        manifest  = new Manifest(manifestUrl.openStream());
+        manifest        = new Manifest(manifestUrl.openStream());
       } catch (FileNotFoundException e) {
         classContainer  =
           classContainer.substring(0, classContainer.indexOf(WEB_INF));
@@ -122,7 +123,7 @@ public class Gebruiker implements Serializable {
   /**
    * Geef de Build Datum van de applicatie.
    * 
-   * @return
+   * @return String
    */
   public String getBouwdatum() {
     return bouwdatum;
@@ -131,7 +132,7 @@ public class Gebruiker implements Serializable {
   /**
    * Geeft de Build Versie van de applicatie.
    * 
-   * @return
+   * @return String
    */
   public String getVersie() {
     return versie;
@@ -164,7 +165,9 @@ public class Gebruiker implements Serializable {
   }
 
   /**
-   * @return de locale
+   * Geef de Locale zodat de taal van de gebruiker bekend is.
+   * 
+   * @return Locale
    */
   public Locale getLocale() {
     if (null == locale) {
@@ -177,14 +180,17 @@ public class Gebruiker implements Serializable {
   /**
    * Geef de Tijdszone.
    * 
-   * @return
+   * @return TimeZone
    */
+  // TODO Zorg voor de TimeZone van de gebruiker.
   public TimeZone getTimeZone() {
     return TimeZone.getDefault();
   }
 
   /**
-   * @return de userId
+   * Geef de user-id.
+   * 
+   * @return String userId
    */
   public String getUserId() {
     if (null == userId) {
@@ -198,13 +204,19 @@ public class Gebruiker implements Serializable {
   }
 
   /**
-   * @return de userName
+   * Geef de volledige naam van de gebruiker. Indien de gebruiker niet is
+   * aangemeld wordt een lege String gegeven. Di om te voorkomen dat de
+   * methode die oproept een NullPointerException krijgt.
+   * 
+   * @return String userName
    */
   public String getUserName() {
     if (null == userName) {
       UserPrincipal principal =
           (UserPrincipal) getExternalContext().getUserPrincipal();
-      userName  = principal.getVolledigeNaam();
+      if (null != principal) {
+        userName  = principal.getVolledigeNaam();
+      }
     }
     if (null == userName) {
       userName  = getUserId();
@@ -214,21 +226,27 @@ public class Gebruiker implements Serializable {
   }
 
   /**
-   * @param locale de waarde van locale
+   * Zet de Locale als die anders moet zijn dan die van de browser.
+   * 
+   * @param Locale de waarde van locale
    */
   public void setLocale(Locale locale) {
     this.locale   = locale;
   }
 
   /**
-   * @param userId de waarde van userId
+   * Zet de user-id als die niet uit de UserPrincipal gehaald kan worden.
+   * 
+   * @param String de waarde van userId
    */
   public void setUserId(String userId) {
     this.userId   = userId;
   }
 
   /**
-   * @param userName de waarde van userName
+   * Zet de user-name als die niet uit de UserPrincipal gehaald kan worden.
+   * 
+   * @param String de waarde van userName
    */
   public void setUserName(String userName) {
     this.userName = userName;

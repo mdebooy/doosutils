@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition xmlns:c="http://java.sun.com/jsp/jstl/core"
+                  xmlns:f="http://java.sun.com/jsf/core"
+                  xmlns:t="http://myfaces.apache.org/tomahawk">
+    <c:if test="#{!readonly}">
+      <t:selectOneMenu id="#{id}" styleClass="form-control" value="#{value}">
+        <c:if test="#{!empty converter}">
+          <f:converter converterId="#{converter}" />
+        </c:if>
+        <t:selectItems value="#{items}" />
+      </t:selectOneMenu>
+    </c:if>
+    <c:if test="#{readonly}">
+      <t:inputText id="#{id}" styleClass="form-control" value="#{textvalue}" readonly="true" />
+    </c:if>
+  </ui:composition>
+</html>

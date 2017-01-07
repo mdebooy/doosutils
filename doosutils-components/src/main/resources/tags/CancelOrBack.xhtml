@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition>
+    <a class="btn btn-default" href="#{href}">#{aktie.readonly and !aktie.verwijder ? i18nTeksten.tekst('button.back') : i18nTeksten.tekst('button.cancel')}</a>
+  </ui:composition>
+</html>

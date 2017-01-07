@@ -2,8 +2,7 @@
 <html  lang="#{gebruiker.locale.language}"
       xmlns="http://www.w3.org/1999/xhtml"
    xmlns:ui="http://java.sun.com/jsf/facelets">
-  <ui:composition xmlns:h="http://java.sun.com/jsf/html"
-                 xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition xmlns:h="http://java.sun.com/jsf/html">
     <h:outputText escape="false" value="&#160;&#160;#{i18nTeksten.tekst('label.versie')}: #{gebruiker.versie} | #{i18nTeksten.tekst('label.bouwdatum')}: #{gebruiker.bouwdatum}" />
   </ui:composition>
 </html>

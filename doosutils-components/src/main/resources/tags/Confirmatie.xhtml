@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition>
+    <div class="modal fade" id="bevestiging" tabindex="-1" role="dialog" aria-labelledby="bevestiging" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">#{confirmatietitel}</h2>
+          </div>
+          <div class="modal-body">
+            <div>
+              <p class="pull-left"><img src="/common/images/32x32/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" hspace="10px" /></p>
+              <h3 id="teVerwijderen"></h3>
+            </div>
+            <br />
+            <h4 class="text-center">#{i18nTeksten.tekst('tekst.confirmatie')}</h4>
+          </div>
+          <div class="modal-footer">
+            <button id="btnDelete" type="button" class="btn btn-warning" data-dismiss="modal" onclick="return false;">#{i18nTeksten.tekst('button.delete')}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">#{i18nTeksten.tekst('button.cancel')}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ui:composition>
+</html>
