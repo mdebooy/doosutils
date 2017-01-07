@@ -8,13 +8,13 @@
   <groupId>eu.debooy.doosutils</groupId>
   <artifactId>doosutils-components</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0-SNAPSHOT</version>
+  <version>2.0.0</version>
   <name>Utility classes voor DOOS Applicaties (components)</name>
   <description>Utility classes voor DOOS Web Applicaties (components).</description>
   <inceptionYear>2009</inceptionYear>
   <scm>
-    <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk/doosutils-components</developerConnection>
-    <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/trunk/doosutils-components</connection>
+    <developerConnection>scm:svn:http://svn.debooy.eu/svn/doosutils/tags/doosutils-components-2.0.0</developerConnection>
+    <connection>scm:svn:http://svn.debooy.eu/svn/doosutils/tags/doosutils-components-2.0.0</connection>
   </scm>
 
   <developers>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-persistence</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
+      <version>2.0.0</version>
     </dependency>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
